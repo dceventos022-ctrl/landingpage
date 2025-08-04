@@ -45,8 +45,8 @@ body {
     height: 20px;
     vertical-align: middle;
     margin-right: 8px;
-    stroke: currentColor; /* Inherit color from button text */
-    fill: none;
+    fill: currentColor; /* Inherit color from button text for filled icons like WhatsApp */
+    stroke: none; /* Ensure no stroke for filled icons */
 }
 
 .icon-alert {
@@ -340,6 +340,11 @@ section {
     font-size: 1.5em; /* Make "O AFTER É LOGO ALI" stand out */
     display: block; /* Ensure it takes its own line */
     margin-top: 10px;
+}
+
+.why-attend-cta {
+    text-align: center;
+    margin-top: 40px; /* Space above the button */
 }
 
 /* Tickets Section */
