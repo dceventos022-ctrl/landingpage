@@ -16,6 +16,47 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Analytics tracking
+let analytics = {
+    pageViews: 0,
+    whatsappClicks: 0
+};
+
+// Load analytics from localStorage
+function loadAnalytics() {
+    const savedAnalytics = localStorage.getItem('eventAnalytics');
+    if (savedAnalytics) {
+        analytics = JSON.parse(savedAnalytics);
+    }
+    return analytics;
+}
+
+// Save analytics to localStorage
+function saveAnalytics() {
+    localStorage.setItem('eventAnalytics', JSON.stringify(analytics));
+}
+
+// Track page view
+function trackPageView() {
+    analytics.pageViews++;
+    saveAnalytics();
+}
+
+// Track WhatsApp click
+function trackWhatsAppClick() {
+    analytics.whatsappClicks++;
+    saveAnalytics();
+}
+
+// Update dashboard display
+function updateDashboard() {
+    const pageViewsElement = document.getElementById('dashboard-page-views');
+    const whatsappClicksElement = document.getElementById('dashboard-whatsapp-clicks');
+    
+    if (pageViewsElement) pageViewsElement.textContent = analytics.pageViews;
+    if (whatsappClicksElement) whatsappClicksElement.textContent = analytics.whatsappClicks;
+}
+
 // Add scroll-triggered animations
 const observerOptions = {
     threshold: 0.1,
@@ -33,6 +74,10 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
+    // Track page view on load
+    loadAnalytics();
+    trackPageView();
+    
     const animatedElements = document.querySelectorAll('.ticket-card, .location-card, .why-attend-section .why-attend-image, .why-attend-section .why-attend-text');
     
     animatedElements.forEach(el => {
@@ -58,6 +103,7 @@ document.querySelectorAll('.cta-button').forEach(button => {
 document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
     link.addEventListener('click', () => {
         // Track WhatsApp clicks for analytics
+        trackWhatsAppClick();
         console.log('WhatsApp button clicked');
     });
 });
@@ -222,6 +268,9 @@ function updateTicketAndCountdown(settings) {
 }
 
 function populateAdminForm(settings) {
+    // Update dashboard when admin panel opens
+    updateDashboard();
+    
     adminEventName.value = settings.eventName;
     adminVenue.value = settings.venue;
     adminDate.value = settings.date;

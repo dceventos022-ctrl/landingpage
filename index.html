@@ -93,7 +93,7 @@
                 
                 <div class="urgency-alerts">
                     <div class="alert"><svg class="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"></path></svg> Ingressos limitados – Garante logo o seu!</div>
-                    <div class="alert"><svg class="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18s-4-2-4-5 4-5 4-5 4 2 4 5-4 5-4 5z"></path><path d="M12 12V3"></path><path d="M12 21V18"></path><path d="M6 16.5L3.5 19"></path><path d="M18 16.5L20.5 19"></path><path d="M2.5 10.5L5 8"></path><path d="M22.5 10.5L20 8"></path></svg> Evento sujeito à lotação</div>
+                    <div class="alert"><svg class="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18s-4-2-4-5 4-5 4-5 4 2 4 5-4 5-4 5z"></path><path d="M12 12V3"></path><path d="M12 21V18"></path><path d="M6 16.5L3.5 19"></path><path d="M22.5 10.5L20 8"></path></svg> Evento sujeito à lotação</div>
                 </div>
                 
                 <a href="https://wa.me/5522997851781?text=Quero%20garantir%20meu%20ingresso%20pro%20AFTER" class="cta-button secondary" target="_blank">
@@ -166,7 +166,29 @@
     <!-- Admin Panel HTML -->
     <div id="admin-panel-overlay">
         <div id="admin-panel">
-            <h2>Configurações do Evento</h2>
+            <h2>Painel de Administração</h2>
+            
+            <!-- Dashboard Section -->
+            <div class="dashboard-section">
+                <h3>📊 Dashboard - Estatísticas em Tempo Real</h3>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">👁️</div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="dashboard-page-views">0</div>
+                            <div class="stat-label">Visualizações da Página</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📱</div>
+                        <div class="stat-info">
+                            <div class="stat-number" id="dashboard-whatsapp-clicks">0</div>
+                            <div class="stat-label">Clicks no WhatsApp</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <form id="admin-form">
                 <h3>Informações Principais</h3>
                 <label for="adminEventName">Nome do Evento:</label>
