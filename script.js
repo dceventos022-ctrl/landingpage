@@ -66,7 +66,7 @@ document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
 const adminPassword = 'Dji15011729$';
 const adminPanelOverlay = document.getElementById('admin-panel-overlay');
 const adminForm = document.getElementById('admin-form');
-const adminAccessBtn = document.getElementById('admin-access-btn');
+const logoMain = document.getElementById('logo-main'); // Get the logo element
 const adminCancelBtn = document.getElementById('adminCancelBtn');
 
 // DOM elements to manage
@@ -76,11 +76,20 @@ const eventDate = document.querySelector('.event-date');
 const heroTagline = document.querySelector('.hero-tagline');
 const ticketsTitle = document.querySelector('.tickets-section .section-title');
 const locationTitle = document.querySelector('.location-section .section-title');
-const ticketLote = document.querySelector('.ticket-type h3');
-const ticketPrice = document.querySelector('.price');
-const paymentInfo = document.querySelector('.payment-info p');
-const pixKeySpan = document.getElementById('pix-key'); // New element for PIX key span
-const logoMain = document.querySelector('.logo-main');
+
+// Ticket & Countdown elements
+const currentLoteName = document.getElementById('current-lote-name');
+const currentLotePrice = document.getElementById('current-lote-price');
+const countdownContainer = document.getElementById('countdown-container');
+const daysSpan = document.getElementById('days');
+const hoursSpan = document.getElementById('hours');
+const minutesSpan = document.getElementById('minutes');
+const secondsSpan = document.getElementById('seconds');
+const nextLoteDisplay = document.getElementById('next-lote-display');
+const nextLoteName = document.getElementById('next-lote-name');
+const nextLotePrice = document.getElementById('next-lote-price');
+
+const pixKeySpan = document.getElementById('pix-key');
 
 // Form inputs
 const adminEventName = document.getElementById('adminEventName');
@@ -89,8 +98,11 @@ const adminDate = document.getElementById('adminDate');
 const adminTagline = document.getElementById('adminTagline');
 const adminTicketsTitle = document.getElementById('adminTicketsTitle');
 const adminLocationTitle = document.getElementById('adminLocationTitle');
-const adminTicketLote = document.getElementById('adminTicketLote');
-const adminTicketPrice = document.getElementById('adminTicketPrice');
+const adminCurrentTicketLote = document.getElementById('adminCurrentTicketLote'); // Renamed
+const adminCurrentTicketPrice = document.getElementById('adminCurrentTicketPrice'); // Renamed
+const adminCountdownDateTime = document.getElementById('adminCountdownDateTime'); // New
+const adminCountdownNextLoteName = document.getElementById('adminCountdownNextLoteName'); // New
+const adminCountdownNextLotePrice = document.getElementById('adminCountdownNextLotePrice'); // New
 const adminPix = document.getElementById('adminPix');
 const adminPrimaryColor = document.getElementById('adminPrimaryColor');
 const adminHeroBg = document.getElementById('adminHeroBg');
@@ -98,6 +110,8 @@ const adminHeroBg = document.getElementById('adminHeroBg');
 // PIX copy elements
 const copyPixBtn = document.getElementById('copy-pix-btn');
 const copyFeedback = document.getElementById('copy-feedback');
+
+let countdownInterval; // To store the interval ID for the countdown
 
 // Function to get current settings from DOM as fallback/initial
 function getInitialDOMSettings() {
@@ -111,7 +125,6 @@ function getInitialDOMSettings() {
     if (dateTextElement.querySelector('svg')) dateTextElement.querySelector('svg').remove();
     const dateText = dateTextElement.textContent.trim();
 
-    // Get PIX text directly from span
     const pixText = pixKeySpan ? pixKeySpan.textContent.trim() : '22997851781';
 
     const currentPrimaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
@@ -124,11 +137,15 @@ function getInitialDOMSettings() {
         tagline: heroTagline.innerHTML,
         ticketsTitle: ticketsTitle.textContent,
         locationTitle: locationTitle.textContent,
-        ticketLote: ticketLote.textContent,
-        ticketPrice: ticketPrice.textContent.replace('R$ ', ''), // Remove 'R$ ' for editing
+        currentTicketLote: currentLoteName.textContent,
+        currentTicketPrice: currentLotePrice.textContent.replace('R$ ', ''),
         pix: pixText,
-        primaryColor: currentPrimaryColor || '#ff6b35', // Fallback to default if not set
-        heroBgImgSrc: currentHeroBgImage || '/O AFTER É LOGO ALI - STORIES.png' // Fallback to default if not set
+        primaryColor: currentPrimaryColor || '#ff6b35',
+        heroBgImgSrc: currentHeroBgImage || '/O AFTER É LOGO ALI - STORIES.png',
+        // Default values for new countdown fields
+        countdownDateTime: '', // No default countdown
+        countdownNextLoteName: 'Segundo Lote',
+        countdownNextLotePrice: '30'
     };
 }
 
@@ -136,7 +153,6 @@ function loadSettings() {
     const savedSettings = JSON.parse(localStorage.getItem('eventSettings'));
     const currentDOMSettings = getInitialDOMSettings();
 
-    // Merge saved settings over current DOM settings if they exist
     return savedSettings ? { ...currentDOMSettings, ...savedSettings } : currentDOMSettings;
 }
 
@@ -147,21 +163,61 @@ function applySettings(settings) {
     heroTagline.innerHTML = settings.tagline;
     ticketsTitle.textContent = settings.ticketsTitle;
     locationTitle.textContent = settings.locationTitle;
-    ticketLote.textContent = settings.ticketLote;
-    ticketPrice.textContent = `R$ ${settings.ticketPrice}`;
     
-    if (pixKeySpan) { // Update the span for PIX
+    if (pixKeySpan) {
         pixKeySpan.textContent = settings.pix;
-    } else { // Fallback if span not found (shouldn't happen with updated HTML)
-        paymentInfo.innerHTML = `<strong>PIX:</strong> ${settings.pix}`;
     }
-    
+
     document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
     document.documentElement.style.setProperty('--hero-bg-image', `url('${settings.heroBgImgSrc}')`);
 
-    // Update the logo main drop shadow color directly
     if (logoMain) {
-        logoMain.style.filter = `drop-shadow(0 0 20px ${settings.primaryColor}4D)`; // 4D is ~30% opacity
+        logoMain.style.filter = `drop-shadow(0 0 20px ${settings.primaryColor}4D)`;
+    }
+
+    // Apply ticket and countdown logic
+    updateTicketAndCountdown(settings);
+}
+
+function updateTicketAndCountdown(settings) {
+    const countdownDate = new Date(settings.countdownDateTime);
+    const now = new Date();
+
+    if (settings.countdownDateTime && countdownDate > now) {
+        // Countdown is active
+        currentLoteName.textContent = settings.currentTicketLote;
+        currentLotePrice.textContent = `R$ ${settings.currentTicketPrice}`;
+        nextLoteName.textContent = settings.countdownNextLoteName;
+        nextLotePrice.textContent = `R$ ${settings.countdownNextLotePrice}`;
+        countdownContainer.style.display = 'block';
+        nextLoteDisplay.style.display = 'block';
+
+        if (countdownInterval) clearInterval(countdownInterval);
+        countdownInterval = setInterval(() => {
+            const distance = countdownDate - new Date();
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                updateTicketAndCountdown(settings); // Call again to switch to next lote
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            daysSpan.textContent = String(days).padStart(2, '0');
+            hoursSpan.textContent = String(hours).padStart(2, '0');
+            minutesSpan.textContent = String(minutes).padStart(2, '0');
+            secondsSpan.textContent = String(seconds).padStart(2, '0');
+        }, 1000);
+    } else {
+        // Countdown is over or not set, display next lote as current
+        currentLoteName.textContent = settings.countdownNextLoteName;
+        currentLotePrice.textContent = `R$ ${settings.countdownNextLotePrice}`;
+        countdownContainer.style.display = 'none';
+        nextLoteDisplay.style.display = 'none';
+        if (countdownInterval) clearInterval(countdownInterval);
     }
 }
 
@@ -172,21 +228,58 @@ function populateAdminForm(settings) {
     adminTagline.value = settings.tagline.replace(/<br>/g, '\n');
     adminTicketsTitle.value = settings.ticketsTitle;
     adminLocationTitle.value = settings.locationTitle;
-    adminTicketLote.value = settings.ticketLote;
-    adminTicketPrice.value = settings.ticketPrice;
+    adminCurrentTicketLote.value = settings.currentTicketLote;
+    adminCurrentTicketPrice.value = settings.currentTicketPrice;
     adminPix.value = settings.pix;
     adminPrimaryColor.value = settings.primaryColor;
     adminHeroBg.value = settings.heroBgImgSrc;
+
+    // Set datetime-local input value, ensure format is correct
+    if (settings.countdownDateTime) {
+        const date = new Date(settings.countdownDateTime);
+        // Format to YYYY-MM-DDTHH:MM for datetime-local input
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        adminCountdownDateTime.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+    } else {
+        adminCountdownDateTime.value = '';
+    }
+    
+    adminCountdownNextLoteName.value = settings.countdownNextLoteName;
+    adminCountdownNextLotePrice.value = settings.countdownNextLotePrice;
 }
 
-adminAccessBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const password = prompt('Digite a senha de administrador:');
-    if (password === adminPassword) {
-        adminPanelOverlay.style.display = 'flex';
-        populateAdminForm(loadSettings()); // Load and populate
-    } else if (password !== null) {
-        alert('Senha incorreta!');
+// Admin access via logo clicks
+let clickCount = 0;
+let clickTimer = null;
+const requiredClicks = 8;
+const clickTimeoutMs = 500; // Time between clicks to count as "sequential"
+
+logoMain.addEventListener('click', () => {
+    clickCount++;
+    if (clickTimer) {
+        clearTimeout(clickTimer);
+    }
+    clickTimer = setTimeout(() => {
+        clickCount = 0; // Reset count if too much time passes
+        clickTimer = null;
+    }, clickTimeoutMs);
+
+    if (clickCount >= requiredClicks) {
+        clickCount = 0; // Reset immediately after opening
+        clearTimeout(clickTimer);
+        clickTimer = null;
+
+        const password = prompt('Digite a senha de administrador:');
+        if (password === adminPassword) {
+            adminPanelOverlay.style.display = 'flex';
+            populateAdminForm(loadSettings()); // Load and populate
+        } else if (password !== null) {
+            alert('Senha incorreta!');
+        }
     }
 });
 
@@ -204,8 +297,11 @@ adminForm.addEventListener('submit', (e) => {
         tagline: adminTagline.value.replace(/\n/g, '<br>'),
         ticketsTitle: adminTicketsTitle.value,
         locationTitle: adminLocationTitle.value,
-        ticketLote: adminTicketLote.value,
-        ticketPrice: adminTicketPrice.value,
+        currentTicketLote: adminCurrentTicketLote.value,
+        currentTicketPrice: adminCurrentTicketPrice.value,
+        countdownDateTime: adminCountdownDateTime.value, // Save as string from datetime-local
+        countdownNextLoteName: adminCountdownNextLoteName.value,
+        countdownNextLotePrice: adminCountdownNextLotePrice.value,
         pix: adminPix.value,
         primaryColor: adminPrimaryColor.value,
         heroBgImgSrc: adminHeroBg.value
@@ -243,16 +339,5 @@ if (copyPixBtn && pixKeySpan) {
 
 // Apply settings on initial load
 document.addEventListener('DOMContentLoaded', () => {
-    // Apply settings loaded from localStorage or current DOM
     applySettings(loadSettings());
-    
-    // Observe elements for animation
-    const animatedElements = document.querySelectorAll('.ticket-card, .location-card, .why-attend-section .why-attend-image, .why-attend-section .why-attend-text');
-    
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
 });

@@ -14,7 +14,7 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-logo">
-                <img src="/ChatGPT Image 28 de jul. de 2025, 12_33_03.png" alt="O After É Logo Ali" class="logo-main">
+                <img src="/ChatGPT Image 28 de jul. de 2025, 12_33_03.png" alt="O After É Logo Ali" class="logo-main" id="logo-main">
             </div>
             <h1 class="hero-title">O AFTER É LOGO ALI</h1>
             <div class="event-details">
@@ -69,9 +69,22 @@
             
             <div class="ticket-card">
                 <div class="ticket-type">
-                    <h3>LOTE PROMOCIONAL</h3>
-                    <div class="price">R$ 20</div>
+                    <h3 id="current-lote-name">LOTE PROMOCIONAL</h3>
+                    <div class="price" id="current-lote-price">R$ 20</div>
                 </div>
+
+                <!-- Countdown Section -->
+                <div id="countdown-container" class="countdown-container">
+                    <p class="countdown-title">Virada de Lote em:</p>
+                    <div class="countdown-timer">
+                        <div class="time-segment"><span id="days">00</span><small>dias</small></div>
+                        <div class="time-segment"><span id="hours">00</span><small>horas</small></div>
+                        <div class="time-segment"><span id="minutes">00</span><small>min</small></div>
+                        <div class="time-segment"><span id="seconds">00</span><small>seg</small></div>
+                    </div>
+                    <p class="next-lote-info" id="next-lote-display">Próximo Lote: <span id="next-lote-name"></span> - <span id="next-lote-price"></span></p>
+                </div>
+                <!-- End Countdown Section -->
                 
                 <div class="payment-info">
                     <p><strong>PIX:</strong> <span id="pix-key">22997851781</span> <button id="copy-pix-btn" class="copy-button">Copiar</button></p>
@@ -147,7 +160,6 @@
     <footer>
         <div class="container">
             <p>&copy; Copyright by DC Eventos 2025</p>
-            <a href="#" id="admin-access-btn" class="admin-link">Admin</a>
         </div>
     </footer>
 
@@ -175,12 +187,21 @@
                 <label for="adminLocationTitle">Título Localização:</label>
                 <input type="text" id="adminLocationTitle" />
 
-                <h3>Ingressos</h3>
-                <label for="adminTicketLote">Lote:</label>
-                <input type="text" id="adminTicketLote" />
+                <h3>Configurações de Lote e Virada</h3>
+                <label for="adminCurrentTicketLote">Nome do Lote Atual:</label>
+                <input type="text" id="adminCurrentTicketLote" />
 
-                <label for="adminTicketPrice">Valor (ex: 20, 35):</label>
-                <input type="text" id="adminTicketPrice" />
+                <label for="adminCurrentTicketPrice">Valor do Lote Atual (ex: 20, 35):</label>
+                <input type="text" id="adminCurrentTicketPrice" />
+
+                <label for="adminCountdownDateTime">Data e Hora da Virada de Lote:</label>
+                <input type="datetime-local" id="adminCountdownDateTime" />
+
+                <label for="adminCountdownNextLoteName">Nome do Próximo Lote:</label>
+                <input type="text" id="adminCountdownNextLoteName" />
+
+                <label for="adminCountdownNextLotePrice">Valor do Próximo Lote (ex: 30, 45):</label>
+                <input type="text" id="adminCountdownNextLotePrice" />
 
                 <label for="adminPix">PIX (ex: 22997851781):</label>
                 <input type="text" id="adminPix" />
