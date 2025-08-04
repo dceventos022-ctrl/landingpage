@@ -1,0 +1,796 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+    --primary-color: #ff6b35; /* Orange */
+    --secondary-color: #f7931e; /* A slightly different orange/amber for gradients */
+    --hero-bg-image: url('/O AFTER É LOGO ALI - STORIES.png');
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0a0a0a;
+    color: #ffffff;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Icons */
+.icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 8px;
+    stroke: var(--primary-color); /* Color for inline icons */
+    fill: none;
+}
+
+.icon-btn {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 8px;
+    stroke: currentColor; /* Inherit color from button text */
+    fill: none;
+}
+
+.icon-alert {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 8px;
+    stroke: var(--primary-color);
+    fill: none;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f0f0f 100%);
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--hero-bg-image) center/cover;
+    opacity: 0.1;
+    z-index: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+    padding: 20px 20px;
+}
+
+.hero-logo {
+    margin-bottom: 0px;
+}
+
+.logo-main {
+    max-width: 300px;
+    height: auto;
+    filter: drop-shadow(0 0 20px var(--primary-color)4D); /* Using 4D for ~30% opacity */
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    margin-bottom: 30px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), #ffffff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px var(--primary-color)80; /* Using 80 for ~50% opacity */
+}
+
+.event-details {
+    margin-bottom: 30px;
+}
+
+.event-venue,
+.event-date {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    display: flex; /* Ensure icon and text align */
+    align-items: center; /* Align items vertically */
+    justify-content: center; /* Center the content */
+}
+
+.hero-tagline {
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 40px;
+    color: #e0e0e0;
+    line-height: 1.4;
+}
+
+/* CTA Buttons */
+.cta-button {
+    display: inline-flex; /* Use flexbox for button content */
+    align-items: center; /* Align items vertically */
+    justify-content: center; /* Center content horizontally */
+    padding: 16px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button.primary {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: #ffffff;
+    box-shadow: 0 8px 25px var(--primary-color)4D; /* Using 4D for ~30% opacity */
+}
+
+.cta-button.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px var(--primary-color)66; /* Using 66 for ~40% opacity */
+}
+
+.cta-button.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 2px solid var(--primary-color);
+    backdrop-filter: blur(10px);
+}
+
+.cta-button.secondary:hover {
+    background: var(--primary-color);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Specific style for the final CTA button */
+.cta-button.cta-button--final {
+    background: #5b0599; /* Specific purple color */
+    border: 2px solid var(--primary-color); /* Orange border */
+    color: #ffffff; /* White text */
+    box-shadow: 0 8px 25px rgba(91, 5, 153, 0.4); /* Custom shadow for purple */
+}
+
+.cta-button.cta-button--final:hover {
+    transform: translateY(-3px);
+    background: #6a06b0; /* Slightly lighter purple on hover */
+    box-shadow: 0 12px 35px rgba(91, 5, 153, 0.6); /* More prominent shadow on hover */
+}
+
+.cta-button.large {
+    padding: 20px 40px;
+    font-size: 1.2rem;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.scroll-arrow {
+    width: 30px;
+    height: 30px;
+    border-bottom: 2px solid var(--primary-color);
+    border-right: 2px solid var(--primary-color);
+    transform: rotate(45deg);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(45deg); }
+    40% { transform: translateY(-10px) rotate(45deg); }
+    60% { transform: translateY(-5px) rotate(45deg); }
+}
+
+/* Section Styles */
+section {
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #ffffff, var(--primary-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 50px;
+    font-weight: 60;
+}
+
+/* Why Attend Section (New) */
+.why-attend-section {
+    background: linear-gradient(135deg, #1a0a2e 0%, #5b0599 100%);
+    padding-top: 50px; /* Adjust padding if needed for visual separation */
+    padding-bottom: 80px;
+}
+
+.why-attend-content {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping columns on smaller screens */
+    align-items: center; /* Vertically align items in the flex container */
+    gap: 40px; /* Space between the image and text columns */
+}
+
+.why-attend-image,
+.why-attend-text {
+    flex: 1; /* Allow columns to grow and shrink */
+    min-width: 300px; /* Minimum width before wrapping */
+}
+
+.why-attend-image {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    border: 1px solid var(--primary-color)33;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.why-attend-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    display: block; /* Remove extra space below image */
+    margin: 0 auto; /* Center image within its container */
+}
+
+.why-attend-text {
+    padding: 20px 0;
+    text-align: left;
+}
+
+.why-attend-text .section-title {
+    text-align: left; /* Override global section-title alignment */
+    margin-bottom: 30px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), #ffffff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.why-attend-text ul {
+    list-style: none; /* Remove default bullet points */
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.why-attend-text ul li {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid var(--primary-color);
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    line-height: 1.5;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.why-attend-text ul li strong {
+    color: var(--primary-color);
+}
+
+.why-attend-conclusion {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.5;
+    text-align: center; /* Center the conclusion text */
+    margin-top: 40px;
+}
+
+.why-attend-conclusion strong {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.5em; /* Make "O AFTER É LOGO ALI" stand out */
+    display: block; /* Ensure it takes its own line */
+    margin-top: 10px;
+}
+
+/* Tickets Section */
+.tickets-section {
+    background: #0a0a0a;
+}
+
+.ticket-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--primary-color)33; /* Using 33 for ~20% opacity */
+}
+
+.ticket-type h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.payment-info {
+    margin-bottom: 30px;
+    padding: 0px;
+    background: var(--primary-color)1A; /* Using 1A for ~10% opacity */
+    border-radius: 15px;
+    border: 1px solid var(--primary-color)4D; /* Using 4D for ~30% opacity */
+}
+
+.payment-info p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    display: flex; /* Align items for PIX key and button */
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 10px; /* Space between items */
+}
+
+.payment-info p strong {
+    white-space: nowrap; /* Prevent "PIX:" from breaking */
+}
+
+.payment-info #pix-key {
+    white-space: nowrap; /* Keep PIX number on one line */
+}
+
+.copy-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+.copy-button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.copy-button:active {
+    transform: translateY(0);
+}
+
+.copy-feedback {
+    font-size: 0.9em;
+    color: #25d366; /* Green for success */
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-align: center;
+    width: 100%; /* Ensure feedback spans full width */
+}
+
+.copy-feedback.show {
+    opacity: 1;
+}
+
+.urgency-alerts {
+    margin-bottom: 30px;
+}
+
+.alert {
+    background: var(--primary-color)1A; /* Using 1A for ~10% opacity */
+    border-left: 4px solid var(--primary-color);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--primary-color);
+    display: flex; /* Use flexbox for icon and text */
+    align-items: center; /* Align items vertically */
+    text-align: left; /* Keep text left-aligned */
+}
+
+/* Location Section */
+.location-section {
+    background: linear-gradient(135deg, #1a0a2e 0%, #5b0599 100%);
+}
+
+.location-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--primary-color)33; /* Using 33 for ~20% opacity */
+}
+
+.location-info h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.location-info p {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    margin-bottom: 30px;
+}
+
+.map-placeholder {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    height: 300px; /* Increased height for better map visibility */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    overflow: hidden; /* Ensure iframe corners are rounded */
+    /* Remove dashed border as it's now a direct map embed */
+    border: none;
+    padding: 0; /* Remove padding */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.map-placeholder iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px; /* Apply border-radius to iframe */
+    /* Remove default iframe border */
+    border: 0;
+}
+
+/* Final Call Section */
+.final-call {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    text-align: center;
+}
+
+.final-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+/* Fixed WhatsApp Button */
+.fixed-whatsapp {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.fixed-whatsapp a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #25d366;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+    transition: all 0.3s ease;
+}
+
+.fixed-whatsapp a:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+}
+
+/* Footer */
+footer {
+    background: #000;
+    color: #e0e0e0;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.admin-link {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s ease;
+}
+
+.admin-link:hover {
+    color: var(--primary-color);
+}
+
+/* Admin Panel Styles */
+#admin-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+    display: none; /* Hidden by default */
+    overflow-y: auto; /* Allow scrolling for long forms */
+    padding: 20px;
+}
+
+#admin-panel {
+    background: #1a0a2e;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    border: 1px solid var(--primary-color)4D;
+    max-height: 90vh; /* Limit height to allow scrolling */
+    overflow-y: auto;
+}
+
+#admin-panel h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--primary-color);
+}
+
+#admin-panel h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+#admin-form label {
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+#admin-form input[type="text"],
+#admin-form input[type="url"],
+#admin-form input[type="color"],
+#admin-form textarea,
+#admin-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+#admin-form input[type="color"] {
+    height: 45px;
+    padding: 5px;
+}
+
+#admin-form textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+#admin-form input:focus,
+#admin-form textarea:focus,
+#admin-form select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color)33;
+}
+
+.admin-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.admin-buttons .cta-button {
+    flex: 1;
+    font-size: 1rem;
+    padding: 12px 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-content {
+        padding: 20px;
+    }
+    
+    .logo-main {
+        max-width: 250px;
+    }
+    
+    .ticket-card,
+    .location-card {
+        padding: 30px 20px;
+    }
+
+    .why-attend-content {
+        flex-direction: column; /* Stack columns on smaller screens */
+        gap: 30px;
+    }
+
+    .why-attend-image,
+    .why-attend-text {
+        min-width: unset; /* Remove min-width for mobile */
+        width: 100%;
+    }
+
+    .why-attend-image {
+        padding: 15px;
+    }
+
+    .why-attend-text .section-title {
+        text-align: center; /* Center title on mobile */
+    }
+
+    .why-attend-text ul li {
+        font-size: 1rem;
+        padding: 12px 15px;
+    }
+
+    .why-attend-conclusion {
+        font-size: 1.1rem;
+    }
+    
+    .fixed-whatsapp {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .fixed-whatsapp a {
+        width: 50px;
+        height: 50px;
+    }
+    
+    section {
+        padding: 60px 0;
+    }
+
+    .event-venue,
+    .event-date {
+        flex-direction: column; /* Stack icon and text on smaller screens */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .event-venue .icon,
+    .event-date .icon {
+        margin-right: 0; /* Remove horizontal margin */
+        margin-bottom: 5px; /* Add vertical margin */
+    }
+
+    #admin-panel {
+        padding: 20px;
+        width: 95%;
+    }
+
+    #admin-panel h2 {
+        font-size: 1.5rem;
+    }
+
+    .admin-buttons {
+        flex-direction: column;
+    }
+
+    .payment-info p {
+        flex-direction: column; /* Stack PIX text and copy button */
+        gap: 5px;
+    }
+
+    .payment-info #pix-key {
+        text-align: center;
+    }
+
+    .map-placeholder {
+        height: 250px; /* Adjust map height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .cta-button {
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+    
+    .cta-button.large {
+        padding: 16px 28px;
+        font-size: 1.1rem;
+    }
+}
