@@ -178,9 +178,9 @@ function getInitialDOMSettings() {
         primaryColor: currentPrimaryColor || '#ff6b35',
         heroBgImgSrc: currentHeroBgImage || '/O AFTER É LOGO ALI - STORIES.png',
         // Default values for new countdown fields
-        countdownDateTime: '', // No default countdown
-        countdownNextLoteName: 'Segundo Lote',
-        countdownNextLotePrice: '30'
+        countdownDateTime: '2025-08-09T00:00', // Set new default countdown time
+        countdownNextLoteName: 'TERCEIRO LOTE', // Set new default next lote name
+        countdownNextLotePrice: '30' // Set new default next lote price
     };
 }
 
