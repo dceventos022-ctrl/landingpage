@@ -438,68 +438,6 @@ section {
     color: var(--primary-color);
 }
 
-.payment-info {
-    margin-bottom: 30px;
-    padding: 0px;
-    background: var(--primary-color)1A; /* Using 1A for ~10% opacity */
-    border-radius: 15px;
-    border: 1px solid var(--primary-color)4D; /* Using 4D for ~30% opacity */
-}
-
-.payment-info p {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    display: flex; /* Align items for PIX key and button */
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-    gap: 10px; /* Space between items */
-}
-
-.payment-info p strong {
-    white-space: nowrap; /* Prevent "PIX:" from breaking */
-}
-
-.payment-info #pix-key {
-    white-space: nowrap; /* Keep PIX number on one line */
-}
-
-.copy-button {
-    background-color: var(--primary-color);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    flex-shrink: 0; /* Prevent button from shrinking */
-}
-
-.copy-button:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
-}
-
-.copy-button:active {
-    transform: translateY(0);
-}
-
-.copy-feedback {
-    font-size: 0.9em;
-    color: #25d366; /* Green for success */
-    margin-top: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    text-align: center;
-    width: 100%; /* Ensure feedback spans full width */
-}
-
-.copy-feedback.show {
-    opacity: 1;
-}
-
 .urgency-alerts {
     margin-bottom: 30px;
 }
@@ -890,15 +828,6 @@ footer .container {
         flex-direction: column;
     }
 
-    .payment-info p {
-        flex-direction: column; /* Stack PIX text and copy button */
-        gap: 5px;
-    }
-
-    .payment-info #pix-key {
-        text-align: center;
-    }
-
     .map-placeholder {
         height: 250px; /* Adjust map height for smaller screens */
     }
@@ -915,6 +844,10 @@ footer .container {
 
     .time-segment span {
         font-size: 2rem;
+    }
+
+    .time-segment small {
+        font-size: 0.7rem;
     }
 
     .dashboard-stats {

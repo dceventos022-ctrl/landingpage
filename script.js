@@ -1,3 +1,5 @@
+import * as localDb from 'localDb';
+
 // Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -24,16 +26,13 @@ let analytics = {
 
 // Load analytics from localStorage
 function loadAnalytics() {
-    const savedAnalytics = localStorage.getItem('eventAnalytics');
-    if (savedAnalytics) {
-        analytics = JSON.parse(savedAnalytics);
-    }
+    analytics = localDb.getAnalytics();
     return analytics;
 }
 
 // Save analytics to localStorage
 function saveAnalytics() {
-    localStorage.setItem('eventAnalytics', JSON.stringify(analytics));
+    localDb.saveAnalytics(analytics);
 }
 
 // Track page view
@@ -135,8 +134,6 @@ const nextLoteDisplay = document.getElementById('next-lote-display');
 const nextLoteName = document.getElementById('next-lote-name');
 const nextLotePrice = document.getElementById('next-lote-price');
 
-const pixKeySpan = document.getElementById('pix-key');
-
 // Form inputs
 const adminEventName = document.getElementById('adminEventName');
 const adminVenue = document.getElementById('adminVenue');
@@ -149,13 +146,8 @@ const adminCurrentTicketPrice = document.getElementById('adminCurrentTicketPrice
 const adminCountdownDateTime = document.getElementById('adminCountdownDateTime'); // New
 const adminCountdownNextLoteName = document.getElementById('adminCountdownNextLoteName'); // New
 const adminCountdownNextLotePrice = document.getElementById('adminCountdownNextLotePrice'); // New
-const adminPix = document.getElementById('adminPix');
 const adminPrimaryColor = document.getElementById('adminPrimaryColor');
 const adminHeroBg = document.getElementById('adminHeroBg');
-
-// PIX copy elements
-const copyPixBtn = document.getElementById('copy-pix-btn');
-const copyFeedback = document.getElementById('copy-feedback');
 
 let countdownInterval; // To store the interval ID for the countdown
 
@@ -171,8 +163,6 @@ function getInitialDOMSettings() {
     if (dateTextElement.querySelector('svg')) dateTextElement.querySelector('svg').remove();
     const dateText = dateTextElement.textContent.trim();
 
-    const pixText = pixKeySpan ? pixKeySpan.textContent.trim() : '22997851781';
-
     const currentPrimaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
     const currentHeroBgImage = getComputedStyle(document.documentElement).getPropertyValue('--hero-bg-image').replace(/url\(["']?(.*?)["']?\)/, '$1').trim();
 
@@ -185,7 +175,6 @@ function getInitialDOMSettings() {
         locationTitle: locationTitle.textContent,
         currentTicketLote: currentLoteName.textContent,
         currentTicketPrice: currentLotePrice.textContent.replace('R$ ', ''),
-        pix: pixText,
         primaryColor: currentPrimaryColor || '#ff6b35',
         heroBgImgSrc: currentHeroBgImage || '/O AFTER É LOGO ALI - STORIES.png',
         // Default values for new countdown fields
@@ -196,24 +185,21 @@ function getInitialDOMSettings() {
 }
 
 function loadSettings() {
-    const savedSettings = JSON.parse(localStorage.getItem('eventSettings'));
+    const savedSettings = localDb.getSettings();
     const currentDOMSettings = getInitialDOMSettings();
 
+    // Merge saved settings with current DOM settings (DOM as fallback for new fields)
     return savedSettings ? { ...currentDOMSettings, ...savedSettings } : currentDOMSettings;
 }
 
 function applySettings(settings) {
     heroTitle.textContent = settings.eventName;
-    eventVenue.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${settings.venue}`;
+    eventVenue.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${settings.venue}`;
     eventDate.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${settings.date}`;
     heroTagline.innerHTML = settings.tagline;
     ticketsTitle.textContent = settings.ticketsTitle;
     locationTitle.textContent = settings.locationTitle;
     
-    if (pixKeySpan) {
-        pixKeySpan.textContent = settings.pix;
-    }
-
     document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
     document.documentElement.style.setProperty('--hero-bg-image', `url('${settings.heroBgImgSrc}')`);
 
@@ -232,9 +218,9 @@ function updateTicketAndCountdown(settings) {
     if (settings.countdownDateTime && countdownDate > now) {
         // Countdown is active
         currentLoteName.textContent = settings.currentTicketLote;
-        currentLotePrice.textContent = `R$ ${settings.currentTicketPrice}`;
+        currentLotePrice.textContent = `R$ ${parseFloat(settings.currentTicketPrice).toFixed(2).replace('.', ',')}`; // Format to currency
         nextLoteName.textContent = settings.countdownNextLoteName;
-        nextLotePrice.textContent = `R$ ${settings.countdownNextLotePrice}`;
+        nextLotePrice.textContent = `R$ ${parseFloat(settings.countdownNextLotePrice).toFixed(2).replace('.', ',')}`; // Format to currency
         countdownContainer.style.display = 'block';
         nextLoteDisplay.style.display = 'block';
 
@@ -260,7 +246,7 @@ function updateTicketAndCountdown(settings) {
     } else {
         // Countdown is over or not set, display next lote as current
         currentLoteName.textContent = settings.countdownNextLoteName;
-        currentLotePrice.textContent = `R$ ${settings.countdownNextLotePrice}`;
+        currentLotePrice.textContent = `R$ ${parseFloat(settings.countdownNextLotePrice).toFixed(2).replace('.', ',')}`; // Format to currency
         countdownContainer.style.display = 'none';
         nextLoteDisplay.style.display = 'none';
         if (countdownInterval) clearInterval(countdownInterval);
@@ -279,7 +265,6 @@ function populateAdminForm(settings) {
     adminLocationTitle.value = settings.locationTitle;
     adminCurrentTicketLote.value = settings.currentTicketLote;
     adminCurrentTicketPrice.value = settings.currentTicketPrice;
-    adminPix.value = settings.pix;
     adminPrimaryColor.value = settings.primaryColor;
     adminHeroBg.value = settings.heroBgImgSrc;
 
@@ -351,40 +336,15 @@ adminForm.addEventListener('submit', (e) => {
         countdownDateTime: adminCountdownDateTime.value, // Save as string from datetime-local
         countdownNextLoteName: adminCountdownNextLoteName.value,
         countdownNextLotePrice: adminCountdownNextLotePrice.value,
-        pix: adminPix.value,
         primaryColor: adminPrimaryColor.value,
         heroBgImgSrc: adminHeroBg.value
     };
 
-    localStorage.setItem('eventSettings', JSON.stringify(newSettings));
+    localDb.saveSettings(newSettings);
     applySettings(newSettings);
     adminPanelOverlay.style.display = 'none';
     alert('Configurações salvas com sucesso!');
 });
-
-// Implement copy PIX functionality
-if (copyPixBtn && pixKeySpan) {
-    copyPixBtn.addEventListener('click', async () => {
-        const pixKey = pixKeySpan.textContent.trim();
-        try {
-            await navigator.clipboard.writeText(pixKey);
-            copyFeedback.textContent = 'Copiado!';
-            copyFeedback.classList.add('show');
-            setTimeout(() => {
-                copyFeedback.classList.remove('show');
-                copyFeedback.textContent = '';
-            }, 2000);
-        } catch (err) {
-            console.error('Falha ao copiar o texto: ', err);
-            copyFeedback.textContent = 'Erro ao copiar.';
-            copyFeedback.classList.add('show');
-            setTimeout(() => {
-                copyFeedback.classList.remove('show');
-                copyFeedback.textContent = '';
-            }, 2000);
-        }
-    });
-}
 
 // Apply settings on initial load
 document.addEventListener('DOMContentLoaded', () => {
