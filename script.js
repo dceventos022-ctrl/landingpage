@@ -119,6 +119,7 @@ const heroTitle = document.querySelector('.hero-title');
 const eventVenue = document.querySelector('.event-venue');
 const eventDate = document.querySelector('.event-date');
 const heroTagline = document.querySelector('.hero-tagline');
+const whyAttendTitle = document.querySelector('.why-attend-section .section-title'); // New: Why Attend Title
 const ticketsTitle = document.querySelector('.tickets-section .section-title');
 const locationTitle = document.querySelector('.location-section .section-title');
 
@@ -139,6 +140,7 @@ const adminEventName = document.getElementById('adminEventName');
 const adminVenue = document.getElementById('adminVenue');
 const adminDate = document.getElementById('adminDate');
 const adminTagline = document.getElementById('adminTagline');
+const adminWhyAttendTitle = document.getElementById('adminWhyAttendTitle'); // New: Why Attend Title input
 const adminTicketsTitle = document.getElementById('adminTicketsTitle');
 const adminLocationTitle = document.getElementById('adminLocationTitle');
 const adminCurrentTicketLote = document.getElementById('adminCurrentTicketLote'); // Renamed
@@ -171,6 +173,7 @@ function getInitialDOMSettings() {
         venue: venueText,
         date: dateText,
         tagline: heroTagline.innerHTML,
+        whyAttendTitle: whyAttendTitle.textContent, // New
         ticketsTitle: ticketsTitle.textContent,
         locationTitle: locationTitle.textContent,
         currentTicketLote: currentLoteName.textContent,
@@ -194,9 +197,10 @@ function loadSettings() {
 
 function applySettings(settings) {
     heroTitle.textContent = settings.eventName;
-    eventVenue.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${settings.venue}`;
+    eventVenue.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${settings.venue}`;
     eventDate.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${settings.date}`;
     heroTagline.innerHTML = settings.tagline;
+    whyAttendTitle.textContent = settings.whyAttendTitle; // New
     ticketsTitle.textContent = settings.ticketsTitle;
     locationTitle.textContent = settings.locationTitle;
     
@@ -261,6 +265,7 @@ function populateAdminForm(settings) {
     adminVenue.value = settings.venue;
     adminDate.value = settings.date;
     adminTagline.value = settings.tagline.replace(/<br>/g, '\n');
+    adminWhyAttendTitle.value = settings.whyAttendTitle; // New
     adminTicketsTitle.value = settings.ticketsTitle;
     adminLocationTitle.value = settings.locationTitle;
     adminCurrentTicketLote.value = settings.currentTicketLote;
@@ -329,6 +334,7 @@ adminForm.addEventListener('submit', (e) => {
         venue: adminVenue.value,
         date: adminDate.value,
         tagline: adminTagline.value.replace(/\n/g, '<br>'),
+        whyAttendTitle: adminWhyAttendTitle.value, // New
         ticketsTitle: adminTicketsTitle.value,
         locationTitle: adminLocationTitle.value,
         currentTicketLote: adminCurrentTicketLote.value,

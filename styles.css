@@ -10,17 +10,20 @@ html {
 }
 
 :root {
-    --primary-color: #ff6b35; /* Orange */
-    --secondary-color: #f7931e; /* A slightly different orange/amber for gradients */
+    --primary-color: #FF3EB5; /* neon magenta */
+    --secondary-color: #7A3CFF; /* electric violet */
     --hero-bg-image: url('/O AFTER É LOGO ALI - STORIES.png');
+    --bg-ink: #0b0b12; /* deep ink background */
+    --bg-ink-2: #121225; /* secondary ink */
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0a0a0a;
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-ink);
     color: #ffffff;
     line-height: 1.6;
     overflow-x: hidden;
+    padding-top: 64px;
 }
 
 /* Container */
@@ -65,7 +68,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f0f0f 100%);
+    background: radial-gradient(1200px 600px at 50% 20%, #1c0f2e 0%, #15152b 45%, var(--bg-ink) 100%);
     text-align: center;
     overflow: hidden;
 }
@@ -78,7 +81,7 @@ body {
     right: 0;
     bottom: 0;
     background: var(--hero-bg-image) center/cover;
-    opacity: 0.1;
+    opacity: 0.35;
     z-index: 1;
 }
 
@@ -88,7 +91,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.35);
     z-index: 2;
 }
 
@@ -104,7 +107,7 @@ body {
 }
 
 .logo-main {
-    max-width: 300px;
+    max-width: 360px; /* increased from 300px to make logo larger */
     height: auto;
     filter: drop-shadow(0 0 20px var(--primary-color)4D); /* Using 4D for ~30% opacity */
     cursor: pointer; /* Indicate it's clickable */
@@ -121,8 +124,30 @@ body {
     text-shadow: 0 0 30px var(--primary-color)80; /* Using 80 for ~50% opacity */
 }
 
+/* Responsive YouTube player in hero */
+.hero-video {
+    width: 100%;
+    max-width: 900px;
+    margin: 18px auto 28px;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+.hero-video iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
 .event-details {
     margin-bottom: 30px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
 }
 
 .event-venue,
@@ -161,9 +186,9 @@ body {
 }
 
 .cta-button.primary {
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: #ffffff;
-    box-shadow: 0 8px 25px var(--primary-color)4D; /* Using 4D for ~30% opacity */
+    box-shadow: 0 8px 30px rgba(122, 60, 255, 0.35);
 }
 
 .cta-button.primary:hover {
@@ -186,16 +211,16 @@ body {
 
 /* Specific style for the final CTA button */
 .cta-button.cta-button--final {
-    background: #5b0599; /* Specific purple color */
-    border: 2px solid var(--primary-color); /* Orange border */
-    color: #ffffff; /* White text */
-    box-shadow: 0 8px 25px rgba(91, 5, 153, 0.4); /* Custom shadow for purple */
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: 2px solid transparent;
+    color: #ffffff;
+    box-shadow: 0 10px 30px rgba(255, 62, 181, 0.35);
 }
 
 .cta-button.cta-button--final:hover {
     transform: translateY(-3px);
-    background: #6a06b0; /* Slightly lighter purple on hover */
-    box-shadow: 0 12px 35px rgba(91, 5, 153, 0.6); /* More prominent shadow on hover */
+    filter: brightness(1.08);
+    box-shadow: 0 14px 40px rgba(122, 60, 255, 0.45);
 }
 
 .cta-button.large {
@@ -237,7 +262,7 @@ section {
     font-weight: 800;
     text-align: center;
     margin-bottom: 20px;
-    background: linear-gradient(45deg, #ffffff, var(--primary-color));
+    background: linear-gradient(45deg, #ffffff, var(--primary-color) 60%, var(--secondary-color));
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -253,7 +278,7 @@ section {
 
 /* Why Attend Section (New) */
 .why-attend-section {
-    background: linear-gradient(135deg, #1a0a2e 0%, #5b0599 100%);
+    background: linear-gradient(135deg, #171733 0%, #221144 55%, #0f0f1c 100%);
     padding-top: 50px; /* Adjust padding if needed for visual separation */
     padding-bottom: 80px;
 }
@@ -261,8 +286,8 @@ section {
 .why-attend-content {
     display: flex;
     flex-wrap: wrap; /* Allows wrapping columns on smaller screens */
-    align-items: center; /* Vertically align items in the flex container */
     gap: 40px; /* Space between the image and text columns */
+    align-items: flex-start; /* changed from center to top-align image and cards */
 }
 
 .why-attend-image,
@@ -295,7 +320,8 @@ section {
 
 .why-attend-text .section-title {
     text-align: left; /* Override global section-title alignment */
-    margin-bottom: 30px;
+    margin-bottom: 0;
+    display: none; /* hide duplicated title inside text column if present */
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), #ffffff);
     background-clip: text;
     -webkit-background-clip: text;
@@ -344,8 +370,8 @@ section {
 }
 
 .why-attend-cta {
-    text-align: center;
-    margin-top: 40px; /* Space above the button */
+    text-align: center; /* center the purchase CTA as requested */
+    margin-top: 24px;
 }
 
 /* Tickets Section */
@@ -457,37 +483,39 @@ section {
 
 /* Location Section */
 .location-section {
-    background: linear-gradient(135deg, #1a0a2e 0%, #5b0599 100%);
+    background: linear-gradient(135deg, #171733 0%, #221144 55%, #0f0f1c 100%);
+    padding-top: 40px; /* compact vertically */
+    padding-bottom: 40px;
 }
 
 .location-card {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 40px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 20px; /* reduced padding for compact layout */
     text-align: center;
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--primary-color)33; /* Using 33 for ~20% opacity */
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--primary-color)2E;
 }
 
 .location-info h3 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary-color);
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .location-info p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #e0e0e0;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
 }
 
 .map-placeholder {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 15px;
-    height: 300px; /* Increased height for better map visibility */
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    height: 420px; /* larger, more prominent map */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -545,6 +573,38 @@ section {
 .fixed-whatsapp a:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+}
+
+/* Header */
+header.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    z-index: 1500;
+    padding: 8px 16px;
+}
+
+/* Small, proportional logo for the navbar */
+.navbar-logo {
+    height: 44px; /* primary navbar logo height */
+    width: auto;
+    max-width: 160px; /* prevents overflow on large screens */
+    display: block;
+    object-fit: contain;
+}
+
+/* Slightly smaller on very small screens */
+@media (max-width: 480px) {
+    .navbar-logo {
+        height: 36px;
+        max-width: 120px;
+    }
 }
 
 /* Footer */
@@ -751,7 +811,7 @@ footer .container {
     }
     
     .logo-main {
-        max-width: 250px;
+        max-width: 300px; /* increased from 250px for better visibility on tablet/mobile */
     }
     
     .ticket-card,
@@ -759,9 +819,13 @@ footer .container {
         padding: 30px 20px;
     }
 
+    .why-attend-section .section-title {
+        white-space: normal; /* allow wrapping on small screens */
+    }
     .why-attend-content {
         flex-direction: column; /* Stack columns on smaller screens */
         gap: 30px;
+        align-items: center; /* revert to center alignment when stacked on mobile */
     }
 
     .why-attend-image,
@@ -815,6 +879,11 @@ footer .container {
         margin-bottom: 5px; /* Add vertical margin */
     }
 
+    .event-details {
+        flex-direction: column;
+        gap: 12px;
+    }
+
     #admin-panel {
         padding: 20px;
         width: 95%;
@@ -829,7 +898,11 @@ footer .container {
     }
 
     .map-placeholder {
-        height: 250px; /* Adjust map height for smaller screens */
+        height: 320px; /* keep map prominent on tablet/mobile */
+    }
+
+    .location-card {
+        padding: 16px;
     }
 
     .countdown-timer {
@@ -843,7 +916,7 @@ footer .container {
     }
 
     .time-segment span {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .time-segment small {
@@ -881,6 +954,10 @@ footer .container {
     .cta-button.large {
         padding: 16px 28px;
         font-size: 1.1rem;
+    }
+
+    .map-placeholder {
+        height: 280px;
     }
 
     .time-segment {
