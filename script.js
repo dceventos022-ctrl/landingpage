@@ -122,6 +122,13 @@ const heroTagline = document.querySelector('.hero-tagline');
 const whyAttendTitle = document.querySelector('.why-attend-section .section-title'); // New: Why Attend Title
 const ticketsTitle = document.querySelector('.tickets-section .section-title');
 const locationTitle = document.querySelector('.location-section .section-title');
+const heroIframe = document.querySelector('.hero-video iframe');
+const whatsappLinks = () => document.querySelectorAll('.whatsapp-link');
+const whyAttendList = document.querySelector('.why-attend-text ul');
+const finalTitleEl = document.querySelector('.final-title');
+const locationNameEl = document.querySelector('.location-info h3');
+const locationAddressEl = document.querySelector('.location-info p');
+const mapIframe = document.querySelector('.map-placeholder iframe');
 
 // Ticket & Countdown elements
 const currentLoteName = document.getElementById('current-lote-name');
@@ -150,6 +157,14 @@ const adminCountdownNextLoteName = document.getElementById('adminCountdownNextLo
 const adminCountdownNextLotePrice = document.getElementById('adminCountdownNextLotePrice'); // New
 const adminPrimaryColor = document.getElementById('adminPrimaryColor');
 const adminHeroBg = document.getElementById('adminHeroBg');
+const adminYouTubeURL = document.getElementById('adminYouTubeURL');
+const adminWhatsAppLink = document.getElementById('adminWhatsAppLink');
+const adminWhyAttendBullets = document.getElementById('adminWhyAttendBullets');
+const adminFinalTitle = document.getElementById('adminFinalTitle');
+const adminLocationName = document.getElementById('adminLocationName');
+const adminLocationAddress = document.getElementById('adminLocationAddress');
+const adminMapUrl = document.getElementById('adminMapUrl');
+const adminSecondaryColor = document.getElementById('adminSecondaryColor');
 
 let countdownInterval; // To store the interval ID for the countdown
 
@@ -168,6 +183,11 @@ function getInitialDOMSettings() {
     const currentPrimaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
     const currentHeroBgImage = getComputedStyle(document.documentElement).getPropertyValue('--hero-bg-image').replace(/url\(["']?(.*?)["']?\)/, '$1').trim();
 
+    const firstWa = document.querySelector('.whatsapp-link');
+    const ytSrc = heroIframe?.src || '';
+    const bullets = Array.from(whyAttendList?.querySelectorAll('li') || []).map(li => li.textContent.trim());
+    const secColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color').trim();
+
     return {
         eventName: heroTitle.textContent,
         venue: venueText,
@@ -183,7 +203,15 @@ function getInitialDOMSettings() {
         // Default values for new countdown fields
         countdownDateTime: '2025-08-09T00:00', // Set new default countdown time
         countdownNextLoteName: 'TERCEIRO LOTE', // Set new default next lote name
-        countdownNextLotePrice: '30' // Set new default next lote price
+        countdownNextLotePrice: '30', // Set new default next lote price
+        whatsappLink: firstWa ? firstWa.getAttribute('href') : '',
+        youtubeURL: ytSrc,
+        whyAttendBullets: bullets.join('\n'),
+        finalTitle: finalTitleEl.innerHTML,
+        locationName: locationNameEl.textContent,
+        locationAddress: locationAddressEl.innerHTML,
+        mapUrl: mapIframe?.src || '',
+        secondaryColor: secColor || '#7A3CFF'
     };
 }
 
@@ -206,7 +234,8 @@ function applySettings(settings) {
     
     document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
     document.documentElement.style.setProperty('--hero-bg-image', `url('${settings.heroBgImgSrc}')`);
-
+    document.documentElement.style.setProperty('--secondary-color', settings.secondaryColor);
+    
     if (logoMain) {
         logoMain.style.filter = `drop-shadow(0 0 20px ${settings.primaryColor}4D)`;
     }
@@ -289,6 +318,14 @@ function populateAdminForm(settings) {
     
     adminCountdownNextLoteName.value = settings.countdownNextLoteName;
     adminCountdownNextLotePrice.value = settings.countdownNextLotePrice;
+    adminYouTubeURL.value = settings.youtubeURL || '';
+    adminWhatsAppLink.value = settings.whatsappLink || '';
+    adminWhyAttendBullets.value = settings.whyAttendBullets || '';
+    adminFinalTitle.value = settings.finalTitle || '';
+    adminLocationName.value = settings.locationName || '';
+    adminLocationAddress.value = settings.locationAddress || '';
+    adminMapUrl.value = settings.mapUrl || '';
+    adminSecondaryColor.value = settings.secondaryColor || '#7A3CFF';
 }
 
 // Admin access via logo clicks
@@ -343,7 +380,15 @@ adminForm.addEventListener('submit', (e) => {
         countdownNextLoteName: adminCountdownNextLoteName.value,
         countdownNextLotePrice: adminCountdownNextLotePrice.value,
         primaryColor: adminPrimaryColor.value,
-        heroBgImgSrc: adminHeroBg.value
+        heroBgImgSrc: adminHeroBg.value,
+        youtubeURL: adminYouTubeURL.value,
+        whatsappLink: adminWhatsAppLink.value,
+        whyAttendBullets: adminWhyAttendBullets.value,
+        finalTitle: adminFinalTitle.value,
+        locationName: adminLocationName.value,
+        locationAddress: adminLocationAddress.value,
+        mapUrl: adminMapUrl.value,
+        secondaryColor: adminSecondaryColor.value
     };
 
     localDb.saveSettings(newSettings);
@@ -356,3 +401,31 @@ adminForm.addEventListener('submit', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     applySettings(loadSettings());
 });
+
+function setWhatsAppHref(href) {
+    if (!href) return;
+    whatsappLinks().forEach(a => a.setAttribute('href', href));
+}
+
+function renderBullets(bulletsStr) {
+    const lines = bulletsStr.split('\n').map(l => l.trim()).filter(Boolean);
+    whyAttendList.innerHTML = '';
+    lines.forEach(line => {
+        const li = document.createElement('li');
+        const parts = line.split(' – ');
+        if (parts.length > 1) {
+            li.innerHTML = `<strong>${parts[0]} –</strong> ${parts.slice(1).join(' – ')}`;
+        } else {
+            const dash = line.split(' - ');
+            li.innerHTML = dash.length > 1 ? `<strong>${dash[0]} –</strong> ${dash.slice(1).join(' - ')}` : line;
+        }
+        whyAttendList.appendChild(li);
+    });
+}
+
+function toEmbedUrl(url) {
+    if (!url) return '';
+    if (url.includes('youtube.com/embed/') || url.includes('youtu.be/') === false) return url.replace('watch?v=', 'embed/');
+    const id = url.split('/').pop().split('?')[0];
+    return `https://www.youtube.com/embed/${id}`;
+}
