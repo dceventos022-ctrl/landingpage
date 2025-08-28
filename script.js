@@ -240,6 +240,9 @@ function applySettings(settings) {
         logoMain.style.filter = `drop-shadow(0 0 20px ${settings.primaryColor}4D)`;
     }
 
+    // Ensure all WhatsApp CTA links are updated from settings
+    setWhatsAppHref(settings.whatsappLink);
+    
     // Apply ticket and countdown logic
     updateTicketAndCountdown(settings);
 }
