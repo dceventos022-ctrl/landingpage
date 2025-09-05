@@ -142,29 +142,13 @@ const nextLoteDisplay = document.getElementById('next-lote-display');
 const nextLoteName = document.getElementById('next-lote-name');
 const nextLotePrice = document.getElementById('next-lote-price');
 
-// Form inputs
-const adminEventName = document.getElementById('adminEventName');
-const adminVenue = document.getElementById('adminVenue');
-const adminDate = document.getElementById('adminDate');
-const adminTagline = document.getElementById('adminTagline');
-const adminWhyAttendTitle = document.getElementById('adminWhyAttendTitle'); // New: Why Attend Title input
-const adminTicketsTitle = document.getElementById('adminTicketsTitle');
-const adminLocationTitle = document.getElementById('adminLocationTitle');
-const adminCurrentTicketLote = document.getElementById('adminCurrentTicketLote'); // Renamed
-const adminCurrentTicketPrice = document.getElementById('adminCurrentTicketPrice'); // Renamed
-const adminCountdownDateTime = document.getElementById('adminCountdownDateTime'); // New
-const adminCountdownNextLoteName = document.getElementById('adminCountdownNextLoteName'); // New
-const adminCountdownNextLotePrice = document.getElementById('adminCountdownNextLotePrice'); // New
-const adminPrimaryColor = document.getElementById('adminPrimaryColor');
-const adminHeroBg = document.getElementById('adminHeroBg');
-const adminYouTubeURL = document.getElementById('adminYouTubeURL');
-const adminWhatsAppLink = document.getElementById('adminWhatsAppLink');
-const adminWhyAttendBullets = document.getElementById('adminWhyAttendBullets');
-const adminFinalTitle = document.getElementById('adminFinalTitle');
-const adminLocationName = document.getElementById('adminLocationName');
-const adminLocationAddress = document.getElementById('adminLocationAddress');
-const adminMapUrl = document.getElementById('adminMapUrl');
-const adminSecondaryColor = document.getElementById('adminSecondaryColor');
+// Form inputs (reduced to only lote controls)
+const adminCurrentTicketLote = document.getElementById('adminCurrentTicketLote');
+const adminCurrentTicketPrice = document.getElementById('adminCurrentTicketPrice');
+const adminCountdownDateTime = document.getElementById('adminCountdownDateTime');
+const adminCountdownNextLoteName = document.getElementById('adminCountdownNextLoteName');
+const adminCountdownNextLotePrice = document.getElementById('adminCountdownNextLotePrice');
+const adminSaveBtn = document.getElementById('adminSaveBtn');
 
 let countdownInterval; // To store the interval ID for the countdown
 
@@ -293,22 +277,11 @@ function populateAdminForm(settings) {
     // Update dashboard when admin panel opens
     updateDashboard();
     
-    adminEventName.value = settings.eventName;
-    adminVenue.value = settings.venue;
-    adminDate.value = settings.date;
-    adminTagline.value = settings.tagline.replace(/<br>/g, '\n');
-    adminWhyAttendTitle.value = settings.whyAttendTitle; // New
-    adminTicketsTitle.value = settings.ticketsTitle;
-    adminLocationTitle.value = settings.locationTitle;
-    adminCurrentTicketLote.value = settings.currentTicketLote;
-    adminCurrentTicketPrice.value = settings.currentTicketPrice;
-    adminPrimaryColor.value = settings.primaryColor;
-    adminHeroBg.value = settings.heroBgImgSrc;
-
-    // Set datetime-local input value, ensure format is correct
+    adminCurrentTicketLote.value = settings.currentTicketLote || settings.countdownNextLoteName || 'LOTE PROMOCIONAL';
+    adminCurrentTicketPrice.value = settings.currentTicketPrice || (settings.currentTicketPrice===0? '0' : '25');
+    // Set datetime-local input value safely
     if (settings.countdownDateTime) {
         const date = new Date(settings.countdownDateTime);
-        // Format to YYYY-MM-DDTHH:MM for datetime-local input
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
@@ -318,17 +291,8 @@ function populateAdminForm(settings) {
     } else {
         adminCountdownDateTime.value = '';
     }
-    
-    adminCountdownNextLoteName.value = settings.countdownNextLoteName;
-    adminCountdownNextLotePrice.value = settings.countdownNextLotePrice;
-    adminYouTubeURL.value = settings.youtubeURL || '';
-    adminWhatsAppLink.value = settings.whatsappLink || '';
-    adminWhyAttendBullets.value = settings.whyAttendBullets || '';
-    adminFinalTitle.value = settings.finalTitle || '';
-    adminLocationName.value = settings.locationName || '';
-    adminLocationAddress.value = settings.locationAddress || '';
-    adminMapUrl.value = settings.mapUrl || '';
-    adminSecondaryColor.value = settings.secondaryColor || '#7A3CFF';
+    adminCountdownNextLoteName.value = settings.countdownNextLoteName || '';
+    adminCountdownNextLotePrice.value = settings.countdownNextLotePrice || '';
 }
 
 // Admin access via logo clicks
@@ -368,36 +332,39 @@ adminCancelBtn.addEventListener('click', () => {
 
 adminForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    // Use existing helper to merge and save only lote settings
+    saveLoteSettingsFromAdmin();
+    adminPanelOverlay.style.display = 'none';
+    alert('Lotes salvos!');
+});
 
+// Save helper that merges existing settings and updates countdown/ticket fields
+function saveLoteSettingsFromAdmin() {
+    const currentSettings = loadSettings();
     const newSettings = {
-        eventName: adminEventName.value,
-        venue: adminVenue.value,
-        date: adminDate.value,
-        tagline: adminTagline.value.replace(/\n/g, '<br>'),
-        whyAttendTitle: adminWhyAttendTitle.value, // New
-        ticketsTitle: adminTicketsTitle.value,
-        locationTitle: adminLocationTitle.value,
-        currentTicketLote: adminCurrentTicketLote.value,
-        currentTicketPrice: adminCurrentTicketPrice.value,
-        countdownDateTime: adminCountdownDateTime.value, // Save as string from datetime-local
-        countdownNextLoteName: adminCountdownNextLoteName.value,
-        countdownNextLotePrice: adminCountdownNextLotePrice.value,
-        primaryColor: adminPrimaryColor.value,
-        heroBgImgSrc: adminHeroBg.value,
-        youtubeURL: adminYouTubeURL.value,
-        whatsappLink: adminWhatsAppLink.value,
-        whyAttendBullets: adminWhyAttendBullets.value,
-        finalTitle: adminFinalTitle.value,
-        locationName: adminLocationName.value,
-        locationAddress: adminLocationAddress.value,
-        mapUrl: adminMapUrl.value,
-        secondaryColor: adminSecondaryColor.value
+        ...currentSettings,
+        currentTicketLote: adminCurrentTicketLote.value || currentSettings.currentTicketLote,
+        currentTicketPrice: adminCurrentTicketPrice.value || currentSettings.currentTicketPrice,
+        countdownDateTime: adminCountdownDateTime.value || currentSettings.countdownDateTime,
+        countdownNextLoteName: adminCountdownNextLoteName.value || currentSettings.countdownNextLoteName,
+        countdownNextLotePrice: adminCountdownNextLotePrice.value || currentSettings.countdownNextLotePrice
     };
-
     localDb.saveSettings(newSettings);
     applySettings(newSettings);
-    adminPanelOverlay.style.display = 'none';
-    alert('Configurações salvas com sucesso!');
+}
+
+// Auto-save on changes
+[adminCurrentTicketLote, adminCurrentTicketPrice, adminCountdownDateTime, adminCountdownNextLoteName, adminCountdownNextLotePrice].forEach(input => {
+    input.addEventListener('change', () => {
+        saveLoteSettingsFromAdmin();
+        updateDashboard();
+    });
+});
+
+// Manual save button (keeps compatibility)
+adminSaveBtn.addEventListener('click', () => {
+    saveLoteSettingsFromAdmin();
+    alert('Lotes salvos!');
 });
 
 // Apply settings on initial load

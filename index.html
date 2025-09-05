@@ -98,8 +98,8 @@
             
             <div class="ticket-card">
                 <div class="ticket-type">
-                    <h3 id="current-lote-name">SEGUNDO LOTE</h3>
-                    <div class="price" id="current-lote-price">R$ 25</div>
+                    <h3 id="current-lote-name">LOTE PROMOCIONAL</h3>
+                    <div class="price" id="current-lote-price">R$25</div>
                 </div>
 
                 <!-- Countdown Section -->
@@ -213,56 +213,25 @@
             
             <form id="admin-form">
                 <h3>Informações Principais</h3>
-                <label for="adminEventName">Nome do Evento:</label>
-                <input type="text" id="adminEventName" />
-                <label for="adminVenue">Local (texto):</label>
-                <input type="text" id="adminVenue" />
-                <label for="adminDate">Data (texto):</label>
-                <input type="text" id="adminDate" />
-                <label for="adminTagline">Frase de Chamada (use &lt;br&gt; para quebras de linha):</label>
-                <textarea id="adminTagline"></textarea>
-                <label for="adminYouTubeURL">URL do Vídeo (YouTube embed ou link):</label>
-                <input type="text" id="adminYouTubeURL" />
-                <label for="adminWhatsAppLink">Link do WhatsApp (CTA):</label>
-                <input type="text" id="adminWhatsAppLink" />
-                <h3>Títulos e Conteúdo</h3>
-                <label for="adminWhyAttendTitle">Título "Por que Participar":</label>
-                <input type="text" id="adminWhyAttendTitle" />
-                <label for="adminWhyAttendBullets">Bullets (um por linha):</label>
-                <textarea id="adminWhyAttendBullets"></textarea>
-                <label for="adminTicketsTitle">Título Ingressos:</label>
-                <input type="text" id="adminTicketsTitle" />
-                <label for="adminLocationTitle">Título Localização:</label>
-                <input type="text" id="adminLocationTitle" />
-                <label for="adminFinalTitle">Título Final (call to action):</label>
-                <textarea id="adminFinalTitle"></textarea>
-                <h3>Local e Mapa</h3>
-                <label for="adminLocationName">Nome do Local:</label>
-                <input type="text" id="adminLocationName" />
-                <label for="adminLocationAddress">Endereço:</label>
-                <textarea id="adminLocationAddress"></textarea>
-                <label for="adminMapUrl">URL do Mapa (embed):</label>
-                <input type="text" id="adminMapUrl" />
-                <h3>Configurações de Lote e Virada</h3>
+
+                <!-- Only lote configuration fields remain -->
                 <label for="adminCurrentTicketLote">Nome do Lote Atual:</label>
                 <input type="text" id="adminCurrentTicketLote" />
-                <label for="adminCurrentTicketPrice">Valor do Lote Atual (ex: 20, 35):</label>
+
+                <label for="adminCurrentTicketPrice">Valor do Lote Atual (ex: 25):</label>
                 <input type="text" id="adminCurrentTicketPrice" />
-                <label for="adminCountdownDateTime">Data e Hora da Virada de Lote:</label>
-                <input type="datetime-local" id="adminCountdownDateTime" />
+
                 <label for="adminCountdownNextLoteName">Nome do Próximo Lote:</label>
                 <input type="text" id="adminCountdownNextLoteName" />
-                <label for="adminCountdownNextLotePrice">Valor do Próximo Lote (ex: 30, 45):</label>
+
+                <label for="adminCountdownNextLotePrice">Valor do Próximo Lote (ex: 30):</label>
                 <input type="text" id="adminCountdownNextLotePrice" />
-                <h3>Customização Visual</h3>
-                <label for="adminPrimaryColor">Cor Primária:</label>
-                <input type="color" id="adminPrimaryColor" />
-                <label for="adminSecondaryColor">Cor Secundária:</label>
-                <input type="color" id="adminSecondaryColor" />
-                <label for="adminHeroBg">Imagem de Fundo (Hero URL):</label>
-                <input type="text" id="adminHeroBg" />
+
+                <label for="adminCountdownDateTime">Data e Hora que começa o próximo lote:</label>
+                <input type="datetime-local" id="adminCountdownDateTime" />
+
                 <div class="admin-buttons">
-                    <button type="submit" class="cta-button primary">Salvar</button>
+                    <button type="button" id="adminSaveBtn" class="cta-button primary">Salvar</button>
                     <button type="button" id="adminCancelBtn" class="cta-button secondary">Cancelar</button>
                 </div>
             </form>
