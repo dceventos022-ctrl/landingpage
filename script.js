@@ -99,7 +99,7 @@ document.querySelectorAll('.cta-button').forEach(button => {
 });
 
 // WhatsApp tracking (optional)
-document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+document.querySelectorAll('a[href*="wa.me"], a[href*="wa.link"]').forEach(link => {
     link.addEventListener('click', () => {
         // Track WhatsApp clicks for analytics
         trackWhatsAppClick();
