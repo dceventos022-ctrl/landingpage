@@ -1,13 +1,23 @@
 const SETTINGS_KEY = 'eventSettings';
 const ANALYTICS_KEY = 'eventAnalytics';
 
+/* Add default settings so the app loads LOTE PROMOCIONAL R$25 by default */
+const DEFAULT_SETTINGS = {
+    currentTicketLote: 'LOTE PROMOCIONAL',
+    currentTicketPrice: '25',
+    countdownDateTime: '2025-09-13T23:00',
+    countdownNextLoteName: 'PRÓXIMO LOTE',
+    countdownNextLotePrice: '30',
+    whatsappLink: 'https://wa.link/up56az'
+};
+
 export function getSettings() {
     try {
         const savedSettings = localStorage.getItem(SETTINGS_KEY);
-        return savedSettings ? JSON.parse(savedSettings) : null;
+        return savedSettings ? { ...DEFAULT_SETTINGS, ...JSON.parse(savedSettings) } : DEFAULT_SETTINGS;
     } catch (e) {
         console.error("Error parsing settings from localStorage", e);
-        return null;
+        return DEFAULT_SETTINGS;
     }
 }
 
@@ -36,4 +46,3 @@ export function saveAnalytics(analytics) {
         console.error("Error saving analytics to localStorage", e);
     }
 }
-
