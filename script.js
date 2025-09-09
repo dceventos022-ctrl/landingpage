@@ -1,4 +1,4 @@
-import * as localDb from 'localDb';
+/* Removed admin/localDb dependency — keep landing data in-source and use localStorage for analytics */
 
 // Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -18,34 +18,25 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Analytics tracking
-let analytics = {
-    pageViews: 0,
-    whatsappClicks: 0
-};
-
-// Load analytics from localStorage
+// Analytics tracking (persisted in localStorage)
+let analyticsKey = 'eventAnalytics';
+let analytics = { pageViews: 0, whatsappClicks: 0 };
 function loadAnalytics() {
-    analytics = localDb.getAnalytics();
+    try {
+        const raw = localStorage.getItem(analyticsKey);
+        analytics = raw ? JSON.parse(raw) : analytics;
+    } catch (e) { analytics = analytics; }
     return analytics;
 }
-
-// Save analytics to localStorage
 function saveAnalytics() {
-    localDb.saveAnalytics(analytics);
+    try { localStorage.setItem(analyticsKey, JSON.stringify(analytics)); } catch (e) {}
 }
 
 // Track page view
-function trackPageView() {
-    analytics.pageViews++;
-    saveAnalytics();
-}
+function trackPageView() { analytics.pageViews++; saveAnalytics(); }
 
 // Track WhatsApp click
-function trackWhatsAppClick() {
-    analytics.whatsappClicks++;
-    saveAnalytics();
-}
+function trackWhatsAppClick() { analytics.whatsappClicks++; saveAnalytics(); }
 
 // Update dashboard display
 function updateDashboard() {
@@ -107,19 +98,15 @@ document.querySelectorAll('a[href*="wa.me"], a[href*="wa.link"]').forEach(link =
     });
 });
 
-// Admin Panel Logic
-const adminPassword = 'Dji15011729$';
-const adminPanelOverlay = document.getElementById('admin-panel-overlay');
-const adminForm = document.getElementById('admin-form');
-const logoMain = document.getElementById('logo-main'); // Get the logo element
-const adminCancelBtn = document.getElementById('adminCancelBtn');
+// Declare countdownInterval to avoid ReferenceError when used before initialization
+let countdownInterval = null;
 
-// DOM elements to manage
+/* DOM elements to manage (no admin) */
 const heroTitle = document.querySelector('.hero-title');
 const eventVenue = document.querySelector('.event-venue');
 const eventDate = document.querySelector('.event-date');
 const heroTagline = document.querySelector('.hero-tagline');
-const whyAttendTitle = document.querySelector('.why-attend-section .section-title'); // New: Why Attend Title
+const whyAttendTitle = document.querySelector('.why-attend-section .section-title');
 const ticketsTitle = document.querySelector('.tickets-section .section-title');
 const locationTitle = document.querySelector('.location-section .section-title');
 const heroIframe = document.querySelector('.hero-video iframe');
@@ -142,17 +129,6 @@ const nextLoteDisplay = document.getElementById('next-lote-display');
 const nextLoteName = document.getElementById('next-lote-name');
 const nextLotePrice = document.getElementById('next-lote-price');
 
-// Form inputs (reduced to only lote controls)
-const adminCurrentTicketLote = document.getElementById('adminCurrentTicketLote');
-const adminCurrentTicketPrice = document.getElementById('adminCurrentTicketPrice');
-const adminCountdownDateTime = document.getElementById('adminCountdownDateTime');
-const adminCountdownNextLoteName = document.getElementById('adminCountdownNextLoteName');
-const adminCountdownNextLotePrice = document.getElementById('adminCountdownNextLotePrice');
-const adminSaveBtn = document.getElementById('adminSaveBtn');
-
-let countdownInterval; // To store the interval ID for the countdown
-
-// Function to get current settings from DOM as fallback/initial
 function getInitialDOMSettings() {
     const venueTextElement = document.createElement('div');
     venueTextElement.innerHTML = eventVenue.innerHTML;
@@ -177,18 +153,18 @@ function getInitialDOMSettings() {
         venue: venueText,
         date: dateText,
         tagline: heroTagline.innerHTML,
-        whyAttendTitle: whyAttendTitle.textContent, // New
+        whyAttendTitle: whyAttendTitle.textContent,
         ticketsTitle: ticketsTitle.textContent,
         locationTitle: locationTitle.textContent,
         currentTicketLote: currentLoteName.textContent,
-        currentTicketPrice: currentLotePrice.textContent.replace('R$ ', ''),
+        currentTicketPrice: currentLotePrice.textContent.replace('R$', '').replace(',', '.').trim(),
         primaryColor: currentPrimaryColor || '#ff6b35',
         heroBgImgSrc: currentHeroBgImage || '/O AFTER É LOGO ALI - STORIES.png',
-        // Default values for new countdown fields
-        countdownDateTime: '2025-08-09T00:00', // Set new default countdown time
-        countdownNextLoteName: 'TERCEIRO LOTE', // Set new default next lote name
-        countdownNextLotePrice: '30', // Set new default next lote price
-        whatsappLink: firstWa ? firstWa.getAttribute('href') : '',
+        // Defaults kept in source
+        countdownDateTime: '2025-09-13T23:00',
+        countdownNextLoteName: 'PRÓXIMO LOTE',
+        countdownNextLotePrice: '30',
+        whatsappLink: firstWa ? firstWa.getAttribute('href') : 'https://wa.link/up56az',
         youtubeURL: ytSrc,
         whyAttendBullets: bullets.join('\n'),
         finalTitle: finalTitleEl.innerHTML,
@@ -200,11 +176,15 @@ function getInitialDOMSettings() {
 }
 
 function loadSettings() {
-    const savedSettings = localDb.getSettings();
+    // Keep landing data in source (no admin). Allow overrides via localStorage for dev convenience.
     const currentDOMSettings = getInitialDOMSettings();
-
-    // Merge saved settings with current DOM settings (DOM as fallback for new fields)
-    return savedSettings ? { ...currentDOMSettings, ...savedSettings } : currentDOMSettings;
+    try {
+        const raw = localStorage.getItem('eventSettings');
+        const saved = raw ? JSON.parse(raw) : null;
+        return saved ? { ...currentDOMSettings, ...saved } : currentDOMSettings;
+    } catch (e) {
+        return currentDOMSettings;
+    }
 }
 
 function applySettings(settings) {
@@ -212,7 +192,7 @@ function applySettings(settings) {
     eventVenue.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${settings.venue}`;
     eventDate.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${settings.date}`;
     heroTagline.innerHTML = settings.tagline;
-    whyAttendTitle.textContent = settings.whyAttendTitle; // New
+    whyAttendTitle.textContent = settings.whyAttendTitle;
     ticketsTitle.textContent = settings.ticketsTitle;
     locationTitle.textContent = settings.locationTitle;
     
@@ -220,10 +200,6 @@ function applySettings(settings) {
     document.documentElement.style.setProperty('--hero-bg-image', `url('${settings.heroBgImgSrc}')`);
     document.documentElement.style.setProperty('--secondary-color', settings.secondaryColor);
     
-    if (logoMain) {
-        logoMain.style.filter = `drop-shadow(0 0 20px ${settings.primaryColor}4D)`;
-    }
-
     // Ensure all WhatsApp CTA links are updated from settings
     setWhatsAppHref(settings.whatsappLink);
     
@@ -273,102 +249,10 @@ function updateTicketAndCountdown(settings) {
     }
 }
 
-function populateAdminForm(settings) {
-    // Update dashboard when admin panel opens
-    updateDashboard();
-    
-    adminCurrentTicketLote.value = settings.currentTicketLote || settings.countdownNextLoteName || 'LOTE PROMOCIONAL';
-    adminCurrentTicketPrice.value = settings.currentTicketPrice || (settings.currentTicketPrice===0? '0' : '25');
-    // Set datetime-local input value safely
-    if (settings.countdownDateTime) {
-        const date = new Date(settings.countdownDateTime);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        adminCountdownDateTime.value = `${year}-${month}-${day}T${hours}:${minutes}`;
-    } else {
-        adminCountdownDateTime.value = '';
-    }
-    adminCountdownNextLoteName.value = settings.countdownNextLoteName || '';
-    adminCountdownNextLotePrice.value = settings.countdownNextLotePrice || '';
-}
-
-// Admin access via logo clicks
-let clickCount = 0;
-let clickTimer = null;
-const requiredClicks = 8;
-const clickTimeoutMs = 500; // Time between clicks to count as "sequential"
-
-logoMain.addEventListener('click', () => {
-    clickCount++;
-    if (clickTimer) {
-        clearTimeout(clickTimer);
-    }
-    clickTimer = setTimeout(() => {
-        clickCount = 0; // Reset count if too much time passes
-        clickTimer = null;
-    }, clickTimeoutMs);
-
-    if (clickCount >= requiredClicks) {
-        clickCount = 0; // Reset immediately after opening
-        clearTimeout(clickTimer);
-        clickTimer = null;
-
-        const password = prompt('Digite a senha de administrador:');
-        if (password === adminPassword) {
-            adminPanelOverlay.style.display = 'flex';
-            populateAdminForm(loadSettings()); // Load and populate
-        } else if (password !== null) {
-            alert('Senha incorreta!');
-        }
-    }
-});
-
-adminCancelBtn.addEventListener('click', () => {
-    adminPanelOverlay.style.display = 'none';
-});
-
-adminForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    // Use existing helper to merge and save only lote settings
-    saveLoteSettingsFromAdmin();
-    adminPanelOverlay.style.display = 'none';
-    alert('Lotes salvos!');
-});
-
-// Save helper that merges existing settings and updates countdown/ticket fields
-function saveLoteSettingsFromAdmin() {
-    const currentSettings = loadSettings();
-    const newSettings = {
-        ...currentSettings,
-        currentTicketLote: adminCurrentTicketLote.value || currentSettings.currentTicketLote,
-        currentTicketPrice: adminCurrentTicketPrice.value || currentSettings.currentTicketPrice,
-        countdownDateTime: adminCountdownDateTime.value || currentSettings.countdownDateTime,
-        countdownNextLoteName: adminCountdownNextLoteName.value || currentSettings.countdownNextLoteName,
-        countdownNextLotePrice: adminCountdownNextLotePrice.value || currentSettings.countdownNextLotePrice
-    };
-    localDb.saveSettings(newSettings);
-    applySettings(newSettings);
-}
-
-// Auto-save on changes
-[adminCurrentTicketLote, adminCurrentTicketPrice, adminCountdownDateTime, adminCountdownNextLoteName, adminCountdownNextLotePrice].forEach(input => {
-    input.addEventListener('change', () => {
-        saveLoteSettingsFromAdmin();
-        updateDashboard();
-    });
-});
-
-// Manual save button (keeps compatibility)
-adminSaveBtn.addEventListener('click', () => {
-    saveLoteSettingsFromAdmin();
-    alert('Lotes salvos!');
-});
-
 // Apply settings on initial load
 document.addEventListener('DOMContentLoaded', () => {
+    // Load analytics, apply source-based settings
+    loadAnalytics();
     applySettings(loadSettings());
 });
 

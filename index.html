@@ -47,7 +47,7 @@
             <h1 class="hero-title" style="display:none;"></h1>
             <!-- YouTube player -->
             <div class="hero-video">
-                <iframe src="https://www.youtube.com/embed/Sfq-SxZnkmw?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/GuFlX5bRmq4?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             <div class="event-details">
                 <p class="event-venue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Clube União – Itaocara/RJ</p>
@@ -189,59 +189,6 @@
         </div>
     </footer>
 
-    <!-- Admin Panel HTML -->
-    <div id="admin-panel-overlay">
-        <div id="admin-panel">
-            <h2>Painel de Administração</h2>
-            
-            <!-- Dashboard Section -->
-            <div class="dashboard-section">
-                <h3>📊 Dashboard - Estatísticas em Tempo Real</h3>
-                <div class="dashboard-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon">👁️</div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="dashboard-page-views">0</div>
-                            <div class="stat-label">Visualizações da Página</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">📱</div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="dashboard-whatsapp-clicks">0</div>
-                            <div class="stat-label">Clicks no WhatsApp</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <form id="admin-form">
-                <h3>Informações Principais</h3>
-
-                <!-- Only lote configuration fields remain -->
-                <label for="adminCurrentTicketLote">Nome do Lote Atual:</label>
-                <input type="text" id="adminCurrentTicketLote" />
-
-                <label for="adminCurrentTicketPrice">Valor do Lote Atual (ex: 25):</label>
-                <input type="text" id="adminCurrentTicketPrice" />
-
-                <label for="adminCountdownNextLoteName">Nome do Próximo Lote:</label>
-                <input type="text" id="adminCountdownNextLoteName" />
-
-                <label for="adminCountdownNextLotePrice">Valor do Próximo Lote (ex: 30):</label>
-                <input type="text" id="adminCountdownNextLotePrice" />
-
-                <label for="adminCountdownDateTime">Data e Hora que começa o próximo lote:</label>
-                <input type="datetime-local" id="adminCountdownDateTime" />
-
-                <div class="admin-buttons">
-                    <button type="button" id="adminSaveBtn" class="cta-button primary">Salvar</button>
-                    <button type="button" id="adminCancelBtn" class="cta-button secondary">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Force a one-time no-store fetch and reload to avoid serving stale cached page -->
     <script>
     (function(){
@@ -266,13 +213,7 @@
     })();
     </script>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "localDb": "./localDb.js"
-            }
-        }
-    </script>
-    <script type="module" src="script.js"></script>
+    <!-- script without admin / module import -->
+    <script src="script.js"></script>
 </body>
 </html>
