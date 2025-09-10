@@ -125,51 +125,48 @@ const daysSpan = document.getElementById('days');
 const hoursSpan = document.getElementById('hours');
 const minutesSpan = document.getElementById('minutes');
 const secondsSpan = document.getElementById('seconds');
-const nextLoteDisplay = document.getElementById('next-lote-display');
-const nextLoteName = document.getElementById('next-lote-name');
-const nextLotePrice = document.getElementById('next-lote-price');
 
 function getInitialDOMSettings() {
+    const venueHTML = (eventVenue && eventVenue.innerHTML) || '';
     const venueTextElement = document.createElement('div');
-    venueTextElement.innerHTML = eventVenue.innerHTML;
+    venueTextElement.innerHTML = venueHTML;
     if (venueTextElement.querySelector('svg')) venueTextElement.querySelector('svg').remove();
     const venueText = venueTextElement.textContent.trim();
 
+    const dateHTML = (eventDate && eventDate.innerHTML) || '';
     const dateTextElement = document.createElement('div');
-    dateTextElement.innerHTML = eventDate.innerHTML;
+    dateTextElement.innerHTML = dateHTML;
     if (dateTextElement.querySelector('svg')) dateTextElement.querySelector('svg').remove();
     const dateText = dateTextElement.textContent.trim();
-
+    
     const currentPrimaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
     const currentHeroBgImage = getComputedStyle(document.documentElement).getPropertyValue('--hero-bg-image').replace(/url\(["']?(.*?)["']?\)/, '$1').trim();
-
     const firstWa = document.querySelector('.whatsapp-link');
     const ytSrc = heroIframe?.src || '';
-    const bullets = Array.from(whyAttendList?.querySelectorAll('li') || []).map(li => li.textContent.trim());
+    const bullets = Array.from((whyAttendList?.querySelectorAll('li') || [])).map(li => li.textContent.trim());
     const secColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color').trim();
 
     return {
-        eventName: heroTitle.textContent,
-        venue: venueText,
-        date: dateText,
-        tagline: heroTagline.innerHTML,
-        whyAttendTitle: whyAttendTitle.textContent,
-        ticketsTitle: ticketsTitle.textContent,
-        locationTitle: locationTitle.textContent,
-        currentTicketLote: currentLoteName.textContent,
-        currentTicketPrice: currentLotePrice.textContent.replace('R$', '').replace(',', '.').trim(),
+        eventName: heroTitle?.textContent || '',
+        venue: venueText || 'Clube União – Itaocara/RJ',
+        date: dateText || 'Sábado, 13 de Setembro - 23h',
+        tagline: heroTagline?.innerHTML || '',
+        whyAttendTitle: whyAttendTitle?.textContent || '',
+        ticketsTitle: ticketsTitle?.textContent || '',
+        locationTitle: locationTitle?.textContent || '',
+        currentTicketLote: currentLoteName?.textContent || 'SEGUNDO LOTE',
+        currentTicketPrice: currentLotePrice?.textContent.replace('R$', '').replace(',', '.').trim() || '30',
         primaryColor: currentPrimaryColor || '#ff6b35',
         heroBgImgSrc: currentHeroBgImage || '/O AFTER É LOGO ALI - STORIES.png',
-        // Defaults kept in source
         countdownDateTime: '2025-09-13T23:00',
         countdownNextLoteName: 'PRÓXIMO LOTE',
         countdownNextLotePrice: '30',
         whatsappLink: firstWa ? firstWa.getAttribute('href') : 'https://wa.link/up56az',
         youtubeURL: ytSrc,
         whyAttendBullets: bullets.join('\n'),
-        finalTitle: finalTitleEl.innerHTML,
-        locationName: locationNameEl.textContent,
-        locationAddress: locationAddressEl.innerHTML,
+        finalTitle: finalTitleEl?.innerHTML || '',
+        locationName: locationNameEl?.textContent || 'Clube União',
+        locationAddress: locationAddressEl?.innerHTML || 'Av. Pres. Sodré, 5 – Centro<br>Itaocara/RJ',
         mapUrl: mapIframe?.src || '',
         secondaryColor: secColor || '#7A3CFF'
     };
@@ -215,10 +212,7 @@ function updateTicketAndCountdown(settings) {
         // Countdown is active
         currentLoteName.textContent = settings.currentTicketLote;
         currentLotePrice.textContent = `R$ ${parseFloat(settings.currentTicketPrice).toFixed(2).replace('.', ',')}`; // Format to currency
-        nextLoteName.textContent = settings.countdownNextLoteName;
-        nextLotePrice.textContent = `R$ ${parseFloat(settings.countdownNextLotePrice).toFixed(2).replace('.', ',')}`; // Format to currency
         countdownContainer.style.display = 'block';
-        nextLoteDisplay.style.display = 'block';
 
         if (countdownInterval) clearInterval(countdownInterval);
         countdownInterval = setInterval(() => {
@@ -244,7 +238,6 @@ function updateTicketAndCountdown(settings) {
         currentLoteName.textContent = settings.countdownNextLoteName;
         currentLotePrice.textContent = `R$ ${parseFloat(settings.countdownNextLotePrice).toFixed(2).replace('.', ',')}`; // Format to currency
         countdownContainer.style.display = 'none';
-        nextLoteDisplay.style.display = 'none';
         if (countdownInterval) clearInterval(countdownInterval);
     }
 }
