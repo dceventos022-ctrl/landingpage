@@ -185,13 +185,13 @@ function loadSettings() {
 }
 
 function applySettings(settings) {
-    heroTitle.textContent = settings.eventName;
-    eventVenue.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${settings.venue}`;
-    eventDate.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${settings.date}`;
-    heroTagline.innerHTML = settings.tagline;
-    whyAttendTitle.textContent = settings.whyAttendTitle;
-    ticketsTitle.textContent = settings.ticketsTitle;
-    locationTitle.textContent = settings.locationTitle;
+    if (heroTitle) heroTitle.textContent = settings.eventName;
+    if (eventVenue) eventVenue.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${settings.venue}`;
+    if (eventDate) eventDate.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${settings.date}`;
+    if (heroTagline) heroTagline.innerHTML = settings.tagline;
+    if (whyAttendTitle) whyAttendTitle.textContent = settings.whyAttendTitle;
+    if (ticketsTitle) ticketsTitle.textContent = settings.ticketsTitle;
+    if (locationTitle) locationTitle.textContent = settings.locationTitle;
     
     document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
     document.documentElement.style.setProperty('--hero-bg-image', `url('${settings.heroBgImgSrc}')`);
@@ -210,9 +210,9 @@ function updateTicketAndCountdown(settings) {
 
     if (settings.countdownDateTime && countdownDate > now) {
         // Countdown is active
-        currentLoteName.textContent = settings.currentTicketLote;
-        currentLotePrice.textContent = `R$ ${parseFloat(settings.currentTicketPrice).toFixed(2).replace('.', ',')}`; // Format to currency
-        countdownContainer.style.display = 'block';
+        if (currentLoteName) currentLoteName.textContent = settings.currentTicketLote;
+        if (currentLotePrice) currentLotePrice.textContent = `R$ ${parseFloat(settings.currentTicketPrice).toFixed(2).replace('.', ',')}`; // Format to currency
+        if (countdownContainer) countdownContainer.style.display = 'block';
 
         if (countdownInterval) clearInterval(countdownInterval);
         countdownInterval = setInterval(() => {
@@ -228,16 +228,23 @@ function updateTicketAndCountdown(settings) {
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            daysSpan.textContent = String(days).padStart(2, '0');
-            hoursSpan.textContent = String(hours).padStart(2, '0');
-            minutesSpan.textContent = String(minutes).padStart(2, '0');
-            secondsSpan.textContent = String(seconds).padStart(2, '0');
+            if (daysSpan) daysSpan.textContent = String(days).padStart(2, '0');
+            if (hoursSpan) hoursSpan.textContent = String(hours).padStart(2, '0');
+            if (minutesSpan) minutesSpan.textContent = String(minutes).padStart(2, '0');
+            if (secondsSpan) secondsSpan.textContent = String(seconds).padStart(2, '0');
         }, 1000);
     } else {
         // Countdown is over or not set, display next lote as current
-        currentLoteName.textContent = settings.countdownNextLoteName;
-        currentLotePrice.textContent = `R$ ${parseFloat(settings.countdownNextLotePrice).toFixed(2).replace('.', ',')}`; // Format to currency
-        countdownContainer.style.display = 'none';
+        if (currentLoteName) currentLoteName.textContent = settings.countdownNextLoteName;
+        if (currentLotePrice) currentLotePrice.textContent = `R$ ${parseFloat(settings.countdownNextLotePrice).toFixed(2).replace('.', ',')}`; // Format to currency
+        if (countdownContainer) countdownContainer.style.display = 'block'; // Ensure it's visible even after countdown.
+        
+        // Hide timer values when done
+        if (daysSpan) daysSpan.textContent = '00';
+        if (hoursSpan) hoursSpan.textContent = '00';
+        if (minutesSpan) minutesSpan.textContent = '00';
+        if (secondsSpan) secondsSpan.textContent = '00';
+
         if (countdownInterval) clearInterval(countdownInterval);
     }
 }

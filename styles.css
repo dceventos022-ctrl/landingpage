@@ -124,6 +124,24 @@ body {
     text-shadow: 0 0 30px var(--primary-color)80; /* Using 80 for ~50% opacity */
 }
 
+/* New styles for sales closed message */
+.sales-closed-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-shadow: 0 0 20px var(--primary-color)80;
+    line-height: 1.2;
+}
+
+.sales-closed-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
 /* Responsive YouTube player in hero */
 .hero-video {
     width: 100%;
