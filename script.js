@@ -98,6 +98,19 @@ document.querySelectorAll('a[href*="wa.me"], a[href*="wa.link"]').forEach(link =
     });
 });
 
+// Attempt to play background audio at low volume; resume on first user gesture if blocked
+(function(){
+    const bg = document.getElementById('bg-audio');
+    if (!bg) return;
+    bg.volume = 0.06; // low volume (~6%)
+    // Try autoplay; many browsers block autoplay with sound, so catch and resume on first interaction
+    bg.play().catch(()=> {
+        const resume = () => { bg.play().catch(()=>{}); document.removeEventListener('click', resume); document.removeEventListener('touchstart', resume); };
+        document.addEventListener('click', resume, { once: true });
+        document.addEventListener('touchstart', resume, { once: true });
+    });
+})();
+
 // Declare countdownInterval to avoid ReferenceError when used before initialization
 let countdownInterval = null;
 
@@ -210,9 +223,9 @@ function updateTicketAndCountdown(settings) {
 
     if (settings.countdownDateTime && countdownDate > now) {
         // Countdown is active
-        if (currentLoteName) currentLoteName.textContent = settings.currentTicketLote;
-        if (currentLotePrice) currentLotePrice.textContent = `R$ ${parseFloat(settings.currentTicketPrice).toFixed(2).replace('.', ',')}`; // Format to currency
-        if (countdownContainer) countdownContainer.style.display = 'block';
+        if(currentLoteName) currentLoteName.textContent = settings.currentTicketLote;
+        if(currentLotePrice) currentLotePrice.textContent = `R$ ${parseFloat(settings.currentTicketPrice).toFixed(2).replace('.', ',')}`; // Format to currency
+        if(countdownContainer) countdownContainer.style.display = 'block';
 
         if (countdownInterval) clearInterval(countdownInterval);
         countdownInterval = setInterval(() => {
@@ -235,16 +248,9 @@ function updateTicketAndCountdown(settings) {
         }, 1000);
     } else {
         // Countdown is over or not set, display next lote as current
-        if (currentLoteName) currentLoteName.textContent = settings.countdownNextLoteName;
-        if (currentLotePrice) currentLotePrice.textContent = `R$ ${parseFloat(settings.countdownNextLotePrice).toFixed(2).replace('.', ',')}`; // Format to currency
-        if (countdownContainer) countdownContainer.style.display = 'block'; // Ensure it's visible even after countdown.
-        
-        // Hide timer values when done
-        if (daysSpan) daysSpan.textContent = '00';
-        if (hoursSpan) hoursSpan.textContent = '00';
-        if (minutesSpan) minutesSpan.textContent = '00';
-        if (secondsSpan) secondsSpan.textContent = '00';
-
+        if(currentLoteName) currentLoteName.textContent = settings.countdownNextLoteName;
+        if(currentLotePrice) currentLotePrice.textContent = `R$ ${parseFloat(settings.countdownNextLotePrice).toFixed(2).replace('.', ',')}`; // Format to currency
+        if(countdownContainer) countdownContainer.style.display = 'none';
         if (countdownInterval) clearInterval(countdownInterval);
     }
 }

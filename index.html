@@ -38,11 +38,19 @@
     </header>
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-overlay"></div>
+        
         <div class="hero-content">
-            <h1 class="sales-closed-title">VENDAS ONLINE ENCERRADAS</h1>
-            <p class="sales-closed-subtitle">INGRESSOS À VENDA NA BILHETERIA, À PARTIR DAS 23H.</p>
-            <p class="sales-closed-subtitle">CHEGUEM CEDO!</p>
+            <div class="hero-logo">
+                <img src="/logo.png" alt="Geração 2000" class="logo-main">
+            </div>
+            <div class="hero-flyer">
+                <img src="/O AFTER É LOGO ALI - FEED.png" alt="Flyer O After é Logo Ali" class="flyer-img">
+            </div>
+            <div class="hero-cta" style="margin-top:18px;">
+                <a class="cta-button primary large whatsapp-link" href="https://wa.link/up56az" target="_blank" rel="noopener noreferrer" aria-label="Comprar ingresso pelo WhatsApp">
+                    GARANTA SEU INGRESSO
+                </a>
+            </div>
         </div>
         <div class="scroll-indicator">
             <div class="scroll-arrow"></div>
@@ -54,17 +62,26 @@
         <div class="container">
             <h2 class="section-title">Por que você NÃO PODE perder esse rolê?</h2>
             <div class="why-attend-content container">
-                <div class="why-attend-image">
-                    <img src="/O AFTER É LOGO ALI - FEED.png" alt="O After é Logo Ali Flyer">
-                </div>
+                <!-- image removed as requested -->
                 <div class="why-attend-text">
-                    <ul>
-                        <li><strong>Nostalgia pura –</strong> Reviva os sons que marcaram época ao som dos DJ´s Júnior Martins e Diego Costa.</li>
-                        <li><strong>Atração lendária –</strong> Show exclusivo de MC R10 O Pinta cantando os maiores HITS da época.</li>
-                        <li><strong>Experiência única –</strong> Festa temática que traz de volta a energia dos rolês pré-pandemia.</li>
-                        <li><strong>Raridade –</strong> Esse evento é uma celebração única, que talvez só se repita novamente daqui 1 ano.</li>
-                        <li><strong>Vai marcar história –</strong> É o tipo de rolê que, quem perde, se lamenta, apenas ouvindo os amigos comentando como foi foda!</li>
-                    </ul>
+                    <div class="why-cards">
+                        <div class="info-card">
+                            <h4>Músicas</h4>
+                            <p>Os grandes sucessos que você nunca imaginou curtir e ouvir novamente em um Rolê em pleno 2025, nossos DJ´s irão tocar!</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Atração Lendária</h4>
+                            <p>Ronny Baby tem uma das músicas mais clássicas do funk dos anos 2000 ( Mais essa festa é só Zueira... ) e um repertório recheado de HITs que todo mundo conhece e curte até hoje.</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Experiência Rara</h4>
+                            <p>Uma festa com a vibe única dos anos 2000 pra curtir com os amigos, que talvez só se repita daqui 1 ano.</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Vai marcar história</h4>
+                            <p>É o tipo de rolê que, quem perde, se lamenta, apenas ouvindo os amigos comentando como foi foda!</p>
+                        </div>
+                    </div>
                     <div class="why-attend-cta">
                         
                     </div>
@@ -73,31 +90,26 @@
         </div>
     </section>
 
-    <!-- Tickets Section -->
-    <section class="tickets-section">
-        <div class="container">
-            <h2 class="section-title">GARANTE SEU INGRESSO</h2>
-            
-            <div class="ticket-card">
-                <div class="ticket-type">
-                    
-                </div>
+    <!-- Tickets Section removed as requested -->
 
-                <!-- Countdown Section -->
-                <div id="countdown-container" class="countdown-container">
-                    <p class="countdown-title">Contagem regressiva para o rolê mais aguardado do ano!</p>
-                    <div class="countdown-timer">
-                        <div class="time-segment"><span id="days">00</span><small>dias</small></div>
-                        <div class="time-segment"><span id="hours">00</span><small>horas</small></div>
-                        <div class="time-segment"><span id="minutes">00</span><small>min</small></div>
-                        <div class="time-segment"><span id="seconds">00</span><small>seg</small></div>
+    <!-- Checkout Section (Seção 3) -->
+    <section class="checkout-section">
+        <div class="container">
+            <h2 class="section-title">COMPRAR INGRESSO</h2>
+            <div class="checkout-card">
+                <div class="checkout-info">
+                    <div class="price-block">
+                        <div class="price-label">Valor do Ingresso</div>
+                        <div class="price-value">R$ 25,00</div>
                     </div>
                 </div>
-                <!-- End Countdown Section -->
-                
-                <div class="urgency-alerts">
+
+                <div class="checkout-actions">
+                    <a id="checkout-button" class="cta-button primary large" href="https://wa.link/up56az" target="_blank" rel="noopener noreferrer">
+                        COMPRAR PELO WHATSAPP
+                    </a>
+                    <p class="checkout-note">Comprando agora, você garante seu ingresso pelo melhor preço e não precisa enfrentar fila na bilheteria do evento.</p>
                 </div>
-                
             </div>
         </div>
     </section>
@@ -134,13 +146,15 @@
     <!-- Final Call Section -->
     <section class="final-call">
         <div class="container">
-            <h2 class="final-title">O tempo não volta, mas você pode dar um REPLAY.<br>Garanta já seu ingresso AGORA e viva essa experiência única!</h2>
+            <h2 class="final-title"><br>Garanta já seu ingresso AGORA e viva essa experiência única!</h2>
             
         </div>
     </section>
 
     <!-- Fixed WhatsApp Button -->
     
+    <!-- Background music (low volume, looping) -->
+    <audio id="bg-audio" src="/track.mp3" loop preload="auto" aria-hidden="true"></audio>
 
     <!-- Footer -->
     <footer>
@@ -173,72 +187,5 @@
     })();
     </script>
 
-    <!-- Store event settings in-page (used by script.js). Keeps Segundo Lote = R$30 -->
-    <script>
-    (function(){
-        try {
-            const SETTINGS_KEY = 'eventSettings';
-            if (!localStorage.getItem(SETTINGS_KEY)) {
-                const settings = {
-                    eventName: '',
-                    venue: 'Clube União – Itaocara/RJ',
-                    date: 'Sábado, 13 de Setembro - 23h',
-                    tagline: '',
-                    whyAttendTitle: 'Por que você NÃO PODE perder esse rolê?',
-                    ticketsTitle: 'GARANTE SEU INGRESSO',
-                    locationTitle: 'LOCALIZAÇÃO',
-                    currentTicketLote: 'SEGUNDO LOTE',
-                    currentTicketPrice: '30',
-                    countdownDateTime: '2025-09-13T23:00',
-                    countdownNextLoteName: 'PRÓXIMO LOTE',
-                    countdownNextLotePrice: '30', /* SEGUNDO LOTE = R$30 */
-                    whatsappLink: 'https://wa.link/up56az',
-                    primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim() || '#FF3EB5',
-                    secondaryColor: getComputedStyle(document.documentElement).getPropertyValue('--secondary-color').trim() || '#7A3CFF',
-                    heroBgImgSrc: '/O AFTER É LOGO ALI - STORIES.png',
-                    whyAttendBullets: Array.from(document.querySelectorAll('.why-attend-text ul li')).map(li => li.textContent.trim()).join('\n'),
-                    finalTitle: document.querySelector('.final-title')?.innerHTML || '',
-                    locationName: document.querySelector('.location-info h3')?.textContent || 'Clube União',
-                    locationAddress: document.querySelector('.location-info p')?.innerHTML || 'Av. Pres. Sodré, 5 – Centro<br>Itaocara/RJ',
-                    mapUrl: document.querySelector('.map-placeholder iframe')?.src || '',
-                    youtubeURL: document.querySelector('.hero-video iframe')?.src || 'https://www.youtube.com/embed/GuFlX5bRmq4?rel=0'
-                };
-                localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-            } else {
-                // Overwrite any existing stored settings with the in-source settings on every load to avoid showing stale cached/local values
-                const settings = {
-                    eventName: '',
-                    venue: 'Clube União – Itaocara/RJ',
-                    date: 'Sábado, 13 de Setembro - 23h',
-                    tagline: '',
-                    whyAttendTitle: 'Por que você NÃO PODE perder esse rolê?',
-                    ticketsTitle: 'GARANTE SEU INGRESSO',
-                    locationTitle: 'LOCALIZAÇÃO',
-                    currentTicketLote: 'SEGUNDO LOTE',
-                    currentTicketPrice: '30',
-                    countdownDateTime: '2025-09-13T23:00',
-                    countdownNextLoteName: 'PRÓXIMO LOTE',
-                    countdownNextLotePrice: '30',
-                    whatsappLink: 'https://wa.link/up56az',
-                    primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim() || '#FF3EB5',
-                    secondaryColor: getComputedStyle(document.documentElement).getPropertyValue('--secondary-color').trim() || '#7A3CFF',
-                    heroBgImgSrc: '/O AFTER É LOGO ALI - STORIES.png',
-                    whyAttendBullets: Array.from(document.querySelectorAll('.why-attend-text ul li')).map(li => li.textContent.trim()).join('\n'),
-                    finalTitle: document.querySelector('.final-title')?.innerHTML || '',
-                    locationName: document.querySelector('.location-info h3')?.textContent || 'Clube União',
-                    locationAddress: document.querySelector('.location-info p')?.innerHTML || 'Av. Pres. Sodré, 5 – Centro<br>Itaocara/RJ',
-                    mapUrl: document.querySelector('.map-placeholder iframe')?.src || '',
-                    youtubeURL: document.querySelector('.hero-video iframe')?.src || 'https://www.youtube.com/embed/GuFlX5bRmq4?rel=0'
-                };
-                localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-            }
-        } catch (e) {
-            console.warn('Could not write in-page settings to localStorage', e);
-        }
-    })();
-    </script>
-
-    <!-- script without admin / module import -->
-    <script src="script.js?v=2"></script>
 </body>
 </html>

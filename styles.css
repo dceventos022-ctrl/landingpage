@@ -10,8 +10,8 @@ html {
 }
 
 :root {
-    --primary-color: #FF3EB5; /* neon magenta */
-    --secondary-color: #7A3CFF; /* electric violet */
+    --primary-color: #00E5FF; /* updated: neon cyan/blue (replaces previous pink) */
+    --secondary-color: #00A3FF; /* updated: complementary neon blue */
     --hero-bg-image: url('/O AFTER É LOGO ALI - STORIES.png');
     --bg-ink: #0b0b12; /* deep ink background */
     --bg-ink-2: #121225; /* secondary ink */
@@ -19,11 +19,15 @@ html {
 
 body {
     font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg-ink);
+    background-color: var(--bg-ink);
+    background-image: linear-gradient(rgba(11, 11, 18, 0.8), rgba(11, 11, 18, 0.8)), var(--hero-bg-image);
+    background-size: cover;
+    background-position: top center;
+    background-attachment: fixed;
     color: #ffffff;
     line-height: 1.6;
     overflow-x: hidden;
-    padding-top: 64px;
+    padding-top: 48px; /* reduced to bring logo closer to top */
 }
 
 /* Container */
@@ -64,11 +68,11 @@ body {
 /* Hero Section */
 .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 72vh; /* slightly reduced to tighten vertical space in hero */
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(1200px 600px at 50% 20%, #1c0f2e 0%, #15152b 45%, var(--bg-ink) 100%);
+    background: transparent;
     text-align: center;
     overflow: hidden;
 }
@@ -80,19 +84,13 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--hero-bg-image) top center/cover;
+    background: transparent;
     opacity: 0.35;
     z-index: 1;
 }
 
 .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.35);
-    z-index: 2;
+    display: none;
 }
 
 .hero-content {
@@ -107,7 +105,7 @@ body {
 }
 
 .logo-main {
-    max-width: 360px; /* increased from 300px to make logo larger */
+    max-width: 380px; /* adjusted to fit flyer without increasing layout margins */
     height: auto;
     filter: drop-shadow(0 0 20px var(--primary-color)4D); /* Using 4D for ~30% opacity */
     cursor: pointer; /* Indicate it's clickable */
@@ -232,7 +230,7 @@ body {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     border: 2px solid transparent;
     color: #ffffff;
-    box-shadow: 0 10px 30px rgba(255, 62, 181, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 229, 255, 0.35); /* updated to match new neon blue */
 }
 
 .cta-button.cta-button--final:hover {
@@ -296,9 +294,9 @@ section {
 
 /* Why Attend Section (New) */
 .why-attend-section {
-    background: linear-gradient(135deg, #171733 0%, #221144 55%, #0f0f1c 100%);
+    background: rgba(11, 11, 18, 0.85);
     padding-top: 50px; /* Adjust padding if needed for visual separation */
-    padding-bottom: 80px;
+    padding-bottom: 40px; /* reduce space below section 2 */
 }
 
 .why-attend-content {
@@ -394,7 +392,7 @@ section {
 
 /* Tickets Section */
 .tickets-section {
-    background: #0a0a0a;
+    background: rgba(40, 40, 40, 0.85); /* dark gray with same transparency */
 }
 
 .ticket-card {
@@ -420,6 +418,94 @@ section {
     font-weight: 800;
     color: #ffffff;
     margin-bottom: 30px;
+}
+
+/* New Checkout Section (Seção 3) */
+.checkout-section {
+    background: rgba(11, 11, 18, 0.88);
+    padding-top: 30px; /* reduce space above checkout (section 3) */
+    padding-bottom: 60px;
+}
+
+.checkout-card {
+    max-width: 720px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.04);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center; /* center contents horizontally */
+    border: 1px solid var(--primary-color)2E;
+}
+
+.checkout-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.price-block .price-label {
+    font-size: 0.95rem;
+    color: #e0e0e0;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.price-block .price-value {
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--primary-color);
+    text-shadow: 0 6px 24px rgba(0,229,255,0.12);
+}
+
+/* Checkout actions area */
+.checkout-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+/* Make the checkout CTA extra prominent */
+.checkout-actions .cta-button.primary.large {
+    padding: 18px 44px;
+    font-size: 1.15rem;
+    border-radius: 12px;
+    box-shadow: 0 18px 50px rgba(0, 163, 255, 0.18), 0 6px 20px rgba(0, 229, 255, 0.12);
+    transform: translateZ(0);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.checkout-actions .cta-button.primary.large:active {
+    transform: translateY(2px) scale(0.998);
+    box-shadow: 0 10px 30px rgba(0, 163, 255, 0.12);
+}
+
+/* Small explanatory note below CTA */
+.checkout-note {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.75);
+    text-align: right;
+    margin: 0;
+}
+
+/* Responsive tweaks for checkout */
+@media (max-width: 768px) {
+    .checkout-card {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px;
+    }
+    .checkout-actions {
+        align-items: center;
+    }
+    .checkout-note {
+        text-align: center;
+    }
 }
 
 /* Countdown Styles */
@@ -487,7 +573,7 @@ section {
 }
 
 .alert {
-    background: var(--primary-color)1A; /* Using 1A for ~10% opacity */
+    background: var(--primary-color)1A; /* Using variable (keeps translucency) */
     border-left: 4px solid var(--primary-color);
     padding: 15px;
     margin-bottom: 15px;
@@ -501,7 +587,7 @@ section {
 
 /* Location Section */
 .location-section {
-    background: linear-gradient(135deg, #171733 0%, #221144 55%, #0f0f1c 100%);
+    background: rgba(11, 11, 18, 0.85);
     padding-top: 40px; /* compact vertically */
     padding-bottom: 40px;
 }
@@ -556,6 +642,7 @@ section {
 /* Final Call Section */
 .final-call {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: rgba(11, 11, 18, 0.85);
     text-align: center;
 }
 
@@ -990,4 +1077,64 @@ footer .container {
     .time-segment small {
         font-size: 0.7rem;
     }
+}
+
+.why-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 18px;
+}
+.info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--primary-color)22;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+.info-card h4 {
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+.info-card p {
+    color: #e0e0e0;
+    font-size: 0.98rem;
+    line-height: 1.4;
+}
+/* Responsive single-column cards on small screens */
+@media (max-width: 768px) {
+    .why-cards { grid-template-columns: 1fr; }
+}
+
+.hero-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .hero-cta .cta-button.large {
+        padding: 16px 32px;
+        font-size: 1.05rem;
+    }
+}
+
+/* Flyer inside hero between logo and CTA */
+.hero-flyer {
+    margin: 18px auto 6px;
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-flyer .flyer-img {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.04);
 }
