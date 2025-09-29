@@ -174,7 +174,7 @@ function getInitialDOMSettings() {
         countdownDateTime: '2025-09-13T23:00',
         countdownNextLoteName: 'PRÓXIMO LOTE',
         countdownNextLotePrice: '30',
-        whatsappLink: firstWa ? firstWa.getAttribute('href') : 'https://wa.link/up56az',
+        whatsappLink: firstWa ? firstWa.getAttribute('href') : 'https://wa.link/1h4oji',
         youtubeURL: ytSrc,
         whyAttendBullets: bullets.join('\n'),
         finalTitle: finalTitleEl?.innerHTML || '',
